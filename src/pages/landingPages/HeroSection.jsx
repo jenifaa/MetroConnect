@@ -44,7 +44,7 @@ function HeroSection() {
               <em>find their place.</em>
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
-              Langipages brings curious people and meaningful conversations into
+              MetroConnect brings curious people and meaningful conversations into
               one beautifully simple community.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
