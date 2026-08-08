@@ -1,19 +1,14 @@
 import { Link } from "react-router";
-import {
-  Facebook,
-  Github,
-  Instagram,
-  Linkedin,
-  Mail,
-  MapPin,
-  Phone,
-  Twitter,
-  Send,
-} from "lucide-react";
+
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { Mail, MapPin, Phone, Send } from "lucide-react";
 
-
+import facebook from "../../assets/icon/facebook.png"
+import instagram from "../../assets/icon/instagram.png"
+import github from "../../assets/icon/github.png"
+import twitter from "../../assets/icon/twitter.png"
+import linkedin from "../../assets/icon/linkedin.png"
 
 export default function Footer() {
   return (
@@ -196,23 +191,23 @@ export default function Footer() {
             <div className="flex gap-4 mt-8">
 
               <a href="#">
-                <Facebook className="h-5 w-5 hover:text-primary transition" />
+                <img src={facebook} alt="Facebook" className="h-5 w-5 hover:text-primary transition" />
               </a>
 
               <a href="#">
-                <Instagram className="h-5 w-5 hover:text-primary transition" />
+                <img src={instagram} alt="Instagram" className="h-5 w-5 hover:text-primary transition" />
               </a>
 
               <a href="#">
-                <Github className="h-5 w-5 hover:text-primary transition" />
+                <img src={github} alt="Github" className="h-5 w-5 hover:text-primary transition" />
               </a>
 
               <a href="#">
-                <Twitter className="h-5 w-5 hover:text-primary transition" />
+                <img src={twitter} alt="Twitter" className="h-5 w-5 hover:text-primary transition" />
               </a>
 
               <a href="#">
-                <Linkedin className="h-5 w-5 hover:text-primary transition" />
+                <img src={linkedin} alt="Linkedin" className="h-5 w-5 hover:text-primary transition" />
               </a>
 
             </div>
