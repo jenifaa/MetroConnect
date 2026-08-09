@@ -1,13 +1,8 @@
-
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useNavigate, Link } from "react-router";
-
-
-
-
 
 import {
   Card,
@@ -26,15 +21,10 @@ import {
 
 import { Input } from "@/components/ui/input";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Button } from "@base-ui/react";
 import { cn } from "@/lib/utils";
+import { useRegisterMutation } from "@/redux/features/auth/auth.api";
+import { Toast } from "../ui/toast";
 
 const registerSchema = z
   .object({
@@ -68,7 +58,7 @@ const registerSchema = z
   });
 
 export default function RegisterForm({ className, ...props }) {
-
+  const [register] = useRegisterMutation();
 
   const navigate = useNavigate();
 
@@ -95,15 +85,15 @@ export default function RegisterForm({ className, ...props }) {
         role: data.role,
       };
 
-    //   await register(userInfo).unwrap();
+      await register(userInfo).unwrap();
 
-      toast.success("Account created successfully 🎉");
+      Toast.success("Account created successfully 🎉");
 
-      navigate("/verify", {
-        state: {
-          email: data.email,
-        },
-      });
+      // navigate("/verify", {
+      //   state: {
+      //     email: data.email,
+      //   },
+      // });
     } catch (err) {
       toast.error(err?.data?.message || "Registration failed");
     }
@@ -113,7 +103,7 @@ export default function RegisterForm({ className, ...props }) {
     <div
       className={cn(
         "min-h-screen flex items-center justify-center px-4 bg-muted/30",
-        className
+        className,
       )}
       {...props}
     >
@@ -136,10 +126,7 @@ export default function RegisterForm({ className, ...props }) {
           </CardHeader>
 
           <CardContent>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-4"
-            >
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FieldGroup className="space-y-4">
                 <Controller
                   name="name"
@@ -148,10 +135,7 @@ export default function RegisterForm({ className, ...props }) {
                     <Field>
                       <FieldLabel>Name</FieldLabel>
 
-                      <Input
-                        {...field}
-                        placeholder="John Doe"
-                      />
+                      <Input {...field} placeholder="John Doe" />
 
                       {fieldState.error && (
                         <FieldError errors={[fieldState.error]} />
@@ -180,57 +164,9 @@ export default function RegisterForm({ className, ...props }) {
                   )}
                 />
 
-                <Controller
-                  name="phone"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field>
-                      <FieldLabel>Phone</FieldLabel>
+                
 
-                      <Input
-                        {...field}
-                        placeholder="+8801XXXXXXXXX"
-                      />
-
-                      {fieldState.error && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )}
-                />
-
-                <Controller
-                  name="role"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field>
-                      <FieldLabel>Select Role</FieldLabel>
-
-                      <Select
-                        value={field.value}
-                        onValueChange={field.onChange}
-                      >
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Choose role" />
-                        </SelectTrigger>
-
-                        <SelectContent>
-                          <SelectItem value="USER">
-                            USER
-                          </SelectItem>
-
-                          <SelectItem value="AGENT">
-                            AGENT
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-
-                      {fieldState.error && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )}
-                />
+               
 
                 <Controller
                   name="password"
@@ -273,10 +209,7 @@ export default function RegisterForm({ className, ...props }) {
                 />
               </FieldGroup>
 
-              <Button
-                type="submit"
-                className="h-11 w-full"
-              >
+              <Button type="submit" className="h-11 w-full">
                 Create account
               </Button>
             </form>
@@ -296,4 +229,3 @@ export default function RegisterForm({ className, ...props }) {
     </div>
   );
 }
-
