@@ -10,7 +10,7 @@ import {
   useUserInfoQuery,
 } from "@/redux/features/auth/auth.api";
 import { useAppDispatch } from "@/redux/hook";
-import { useEffect, useState } from "react";
+
 import { ModeToggle } from "./MoodToggler";
 import {
   DropdownMenu,
@@ -40,22 +40,9 @@ export default function Navbar() {
   const [logout] = useLogoutMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [scrolled, setScrolled] = useState(false);
+
   const userRole = data?.data?.role;
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
 
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // const handleLogout = async () => {
-  //   await logout(undefined).unwrap();
-  //   dispatch(authApi.util.resetApiState());
-  // };
   const handleLogout = async () => {
     try {
       await logout(undefined).unwrap();
@@ -70,11 +57,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed  top-0 z-50 w-full transition-all duration-300 ${
-        scrolled
-          ? "border-b bg-white/80 backdrop-blur-xl shadow-sm"
-          : "bg-transparent text-white"
-      }`}
+      className="fixed  top-0 z-50 w-full transition-all duration-300 "
     >
       <div className="container w-11/12 mx-auto flex h-16 items-center justify-between px-4 lg:px-6">
         {/* Logo */}

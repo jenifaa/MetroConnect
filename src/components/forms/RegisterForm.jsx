@@ -1,7 +1,7 @@
 import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
+
+
+
 import { useNavigate, Link } from "react-router";
 
 import {
@@ -24,7 +24,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@base-ui/react";
 import { cn } from "@/lib/utils";
 import { useRegisterMutation } from "@/redux/features/auth/auth.api";
-import { Toast } from "../ui/toast";
+import { toast, Toast } from "../ui/toast";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const registerSchema = z
   .object({
@@ -89,11 +91,11 @@ export default function RegisterForm({ className, ...props }) {
 
       Toast.success("Account created successfully 🎉");
 
-      // navigate("/verify", {
-      //   state: {
-      //     email: data.email,
-      //   },
-      // });
+      navigate("/", {
+        state: {
+          email: data.email,
+        },
+      });
     } catch (err) {
       toast.error(err?.data?.message || "Registration failed");
     }
