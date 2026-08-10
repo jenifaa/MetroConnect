@@ -5,6 +5,7 @@ import AboutUs from "../pages/publicPages/AboutUs";
 import AllPost from "../pages/publicPages/AllPost";
 import ContactUs from "../pages/publicPages/ContactUs";
 import Login from "@/pages/authPages/Login";
+import Register from "@/pages/authPages/Register";
 
 const router = createBrowserRouter([
   {
@@ -18,8 +19,12 @@ const router = createBrowserRouter([
     ],
   },
   {
+    Component: Register,
+    path: "/register",
+  },
+  {
     Component: Login,
-    path:"/login"
-  }
+    path: "/login",
+  },
 ]);
 export default router;

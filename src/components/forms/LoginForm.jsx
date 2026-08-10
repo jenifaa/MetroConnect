@@ -1,7 +1,7 @@
 
 
 import { Controller, useForm } from "react-hook-form";
-import { toast } from "sonner";
+
 import { Link, useNavigate } from "react-router";
 
 import { Button } from "@/components/ui/button";
@@ -26,6 +26,7 @@ import { cn } from "@/lib/utils";
 
 import { useLoginMutation } from "@/redux/features/auth/auth.api";
 import config from "@/config";
+import { toast } from "../ui/toast";
 
 export function LoginForm({ className, ...props }) {
   const navigate = useNavigate();
