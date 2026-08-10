@@ -1,93 +1,278 @@
-import { Link, NavLink } from "react-router";
-import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import { Link, useNavigate } from "react-router";
+
 import { Button } from "../ui/button";
-import { Menu } from "lucide-react";
+
 
 import logo from "../../assets/logo/logo.png";
+import {
+  authApi,
+  useLogoutMutation,
+  useUserInfoQuery,
+} from "@/redux/features/auth/auth.api";
+import { useAppDispatch } from "@/redux/hook";
+import { useEffect, useState } from "react";
+import { ModeToggle } from "./MoodToggler";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 const navLinks = [
-  { name: "Home", path: "/" },
-  { name: "About", path: "/about" },
-  { name: "Features", path: "/features" },
-  { name: "Contact", path: "/contact" },
+  { to: "/", label: "Home", role: "PUBLIC" },
+  { to: "/about", label: "About", role: "PUBLIC" },
+  { to: "/features", label: "Features", role: "PUBLIC" },
+  { to: "/service", label: "Services", role: "PUBLIC" },
+  { to: "/pricing", label: "Pricing", role: "PUBLIC" },
+
+  { to: "/contact", label: "Contact", role: "PUBLIC" },
+  { to: "/admin", label: "Dashboard", role: "ADMIN" },
+  { to: "/admin", label: "Dashboard", role: "SUPER_ADMIN" },
+  { to: "/user", label: "Dashboard", role: "USER" },
 ];
 
 export default function Navbar() {
-  return (
-    <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur">
-      <div className="w-10/12 mx-auto flex h-16 items-center justify-between px-4">
-        <Link to="/" className="">
-          <img src={logo} alt="MetroConnect Logo" className="w-14" />
-        </Link>
+  const { data } = useUserInfoQuery(undefined);
+  const [logout] = useLogoutMutation();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const [scrolled, setScrolled] = useState(false);
+  const userRole = data?.data?.role;
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
 
-        {/* Desktop Menu */}
-        <nav className="hidden items-center gap-10 md:flex">
-          {navLinks.map((link) => (
-            <NavLink
-              key={link.path}
-              to={link.path}
-              className={({ isActive }) =>
-                `transition-colors hover:text-primary ${
-                  isActive
-                    ? "font-semibold text-primary"
-                    : "text-muted-foreground"
-                }`
-              }
-            >
-              {link.name}
-            </NavLink>
-          ))}
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // const handleLogout = async () => {
+  //   await logout(undefined).unwrap();
+  //   dispatch(authApi.util.resetApiState());
+  // };
+  const handleLogout = async () => {
+    try {
+      await logout(undefined).unwrap();
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      dispatch(authApi.util.resetApiState());
+      navigate("/login");
+    } catch (error) {
+      console.log("Logout failed:", error);
+    }
+  };
+
+  return (
+    <header
+      className={`fixed  top-0 z-50 w-full transition-all duration-300 ${
+        scrolled
+          ? "border-b bg-white/80 backdrop-blur-xl shadow-sm"
+          : "bg-transparent text-white"
+      }`}
+    >
+      <div className="container w-11/12 mx-auto flex h-16 items-center justify-between px-4 lg:px-6">
+        {/* Logo */}
+        <div className="flex items-center gap-3">
+          <Link to="/" className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-md">
+            <img
+              src={logo}
+              alt="Logo"
+              className="h-full w-full object-contain"
+            />
+          </Link>
+
+          <div>
+            <h1 className="text-base font-semibold tracking-tight">
+              Wallet
+              <span className="bg-linear-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent font-extrabold tracking-tight">
+                IQ
+              </span>{" "}
+            </h1>
+            <p className="text-xs text-muted-foreground -mt-0.5">
+              Modern Experience
+            </p>
+          </div>
+        </div>
+
+        {/* Desktop Navigation */}
+        <nav className="hidden items-center gap-1 lg:flex">
+          {navLinks
+            .filter((link) => link.role === "PUBLIC" || link.role === userRole)
+            .map((link, index) => (
+              <Link
+                key={index}
+                to={link.to}
+                className="rounded-lg px-4 py-2 text-sm font-medium  transition-all duration-200 hover:bg-muted hover:text-foreground"
+              >
+                {link.label}
+              </Link>
+            ))}
         </nav>
 
-        {/* Desktop Buttons */}
-        <div className="hidden items-center gap-3 md:flex">
-          <Button variant="ghost" asChild>
-            <Link to="/login">Login</Link>
-          </Button>
+        {/* Actions */}
+        <div className="hidden items-center gap-3 lg:flex">
+          {data?.data?.email && (
+            <>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <img
+                    src={
+                      data?.data?.picture ||
+                      "https://i.ibb.co.com/xttK0CDW/pp.jpg"
+                    }
+                    className="w-10 h-10 rounded-full"
+                    alt=""
+                  />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuGroup>
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuItem>
+                      <Link to="/change-password">Change Password</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link to="/profile">My Profile</Link>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
 
-          <Button asChild>
-            <Link to="/register">Sign Up</Link>
-          </Button>
+                  <DropdownMenuItem>Announcement</DropdownMenuItem>
+                  <DropdownMenuItem>Settings</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <Button
+                onClick={handleLogout}
+                variant="outline"
+                className="text-black"
+              >
+                LogOut
+              </Button>
+            </>
+          )}
+
+          {!data?.data?.email && (
+            <>
+              <Link
+                to="/login"
+                className="rounded-xl border px-4 py-2 text-sm font-medium transition hover:bg-muted hover:text-black"
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="rounded-xl text-white bg-[#1F2340] px-5 py-2 text-sm font-medium  shadow-lg transition hover:opacity-90"
+              >
+                Get Started
+              </Link>
+            </>
+          )}
+          <ModeToggle />
         </div>
 
         {/* Mobile Menu */}
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="md:hidden">
-              <Menu className="h-6 w-6" />
-            </Button>
-          </SheetTrigger>
+        <details className="relative lg:hidden">
+          <summary className="flex gap-4 cursor-pointer list-none items-center rounded-xl border p-2 hover:bg-muted">
+            {data?.data?.email && (
+              <>
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <img
+                      src={
+                        data?.data?.picture ||
+                        "https://i.ibb.co.com/xttK0CDW/pp.jpg"
+                      }
+                      className="w-10 h-10 rounded-full"
+                      alt=""
+                    />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuGroup>
+                      <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                      <DropdownMenuItem>
+                        <Link to="/change-password">Change Password</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Link to="/profile">My Profile</Link>
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                    <DropdownMenuSeparator />
 
-          <SheetContent side="right" className="w-72">
-            <div className="mt-8 flex flex-col gap-6">
-              {navLinks.map((link) => (
-                <NavLink
-                  key={link.path}
-                  to={link.path}
-                  className={({ isActive }) =>
-                    `text-lg transition-colors ${
-                      isActive
-                        ? "font-semibold text-primary"
-                        : "text-muted-foreground"
-                    }`
-                  }
-                >
-                  {link.name}
-                </NavLink>
-              ))}
+                    <DropdownMenuItem>Announcement</DropdownMenuItem>
+                    <DropdownMenuItem>Settings</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </>
+            )}
+            <ModeToggle />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </summary>
 
-              <div className="mt-6 flex flex-col gap-3">
-                <Button variant="outline" asChild>
-                  <Link to="/login">Login</Link>
-                </Button>
-
-                <Button asChild>
-                  <Link to="/register">Sign Up</Link>
-                </Button>
-              </div>
+          <div className="absolute right-0 mt-3 w-72 rounded-2xl border bg-background p-4 shadow-2xl">
+            <div className="flex flex-col gap-1">
+              {navLinks
+                .filter(
+                  (link) => link.role === "PUBLIC" || link.role === userRole,
+                )
+                .map((link, index) => (
+                  <Link
+                    key={index}
+                    to={link.to}
+                    className="rounded-lg px-4 py-2 text-sm font-medium text-muted-foreground transition-all duration-200 hover:bg-muted hover:text-foreground"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
             </div>
-          </SheetContent>
-        </Sheet>
+
+            <div className="mt-4 flex flex-col gap-2 border-t pt-4">
+              {data?.data?.email && (
+                <Button
+                  onClick={handleLogout}
+                  variant="outline"
+                  className="dark:text-white text-black "
+                >
+                  LogOut
+                </Button>
+              )}
+              {!data?.data?.email && (
+                <>
+                  <Link
+                    to="/login"
+                    className="dark:text-white rounded-xl border px-4 py-2 text-sm font-medium transition text-black hover:bg-muted hover:text-black"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="dark:text-white rounded-xl bg-[#1F2340] px-5 py-2 text-sm font-medium text-primary-foreground shadow-lg transition hover:opacity-90"
+                  >
+                    Get Started
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+        </details>
       </div>
     </header>
   );
