@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Link, useParams, useNavigate } from "react-router";
+import {  useParams, useNavigate } from "react-router";
 import {
   ArrowLeft,
-  Clock,
+
   MapPin,
   Phone,
-  User,
+
   Trash2,
   Calendar,
   Info,
@@ -15,7 +15,7 @@ import {
   useDeleteLostFoundMutation,
 } from "@/redux/features/lost-found/lostFound.api";
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
-import { LoadingState, EmptyState, ErrorState } from "@/components/common/States";
+import { LoadingState,  ErrorState } from "@/components/common/States";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
