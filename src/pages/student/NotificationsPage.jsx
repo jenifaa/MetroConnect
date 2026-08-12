@@ -1,4 +1,4 @@
-import { Bell, Check, Clock, Trash2, MailOpen, Eye } from "lucide-react";
+import { Bell, Check, Clock, Eye } from "lucide-react";
 import {
   useGetNotificationsQuery,
   useMarkNotificationReadMutation,

@@ -5,7 +5,7 @@ import {
   AlertOctagon,
   Search,
   Bell,
-  User,
+
   ArrowRight,
   Megaphone,
   PlusCircle,
@@ -15,8 +15,8 @@ import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 import { useGetAnnouncementsQuery } from "@/redux/features/announcement/announcement.api";
 import { useGetComplaintsQuery } from "@/redux/features/complaint/complaint.api";
 import { useGetNotificationsQuery } from "@/redux/features/notification/notification.api";
-import PageHeader from "@/components/common/PageHeader";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 export default function StudentDashboard() {

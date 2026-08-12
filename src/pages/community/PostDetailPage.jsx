@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useParams, useNavigate } from "react-router";
+import {  useParams, useNavigate } from "react-router";
 import {
   MessageSquare,
   ThumbsUp,
@@ -9,7 +9,7 @@ import {
   Tag,
   Trash2,
   Send,
-  CornerDownRight,
+
 } from "lucide-react";
 import {
   useGetPostByIdQuery,
@@ -19,7 +19,7 @@ import {
   useReportPostMutation,
 } from "@/redux/features/post/post.api";
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
-import { LoadingState, EmptyState, ErrorState } from "@/components/common/States";
+import { LoadingState, ErrorState } from "@/components/common/States";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";

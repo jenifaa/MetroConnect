@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router";
-import { ArrowLeft, Clock, Megaphone, Calendar, Shield } from "lucide-react";
+import { ArrowLeft, Clock, Megaphone,  Shield } from "lucide-react";
 import { useGetAnnouncementByIdQuery } from "@/redux/features/announcement/announcement.api";
 import { LoadingState, ErrorState } from "@/components/common/States";
 import { Button } from "@/components/ui/button";

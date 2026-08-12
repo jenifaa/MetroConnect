@@ -13,7 +13,7 @@ export default function AllPost() {
     <main>
       <section className="public-hero py-18 sm:py-24">
         <div className="page-wrap">
-          <p className="section-eyebrow">THE LANGIPAGES JOURNAL</p>
+          <p className="section-eyebrow">THE MetroConnect JOURNAL</p>
           <h1 className="mt-4 max-w-3xl font-serif text-5xl leading-tight tracking-tight text-slate-900 sm:text-6xl">
             Ideas for a more
             <br />
