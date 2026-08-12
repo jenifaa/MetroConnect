@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
-import { User, Mail, Phone, BookOpen, GraduationCap, FileText, Save, Edit, Key } from "lucide-react";
+import {  Mail, Phone, GraduationCap, FileText, Save, Edit, Key } from "lucide-react";
 import {
   useUserInfoQuery,
   useUpdateUserProfileMutation,
@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field, FieldLabel, FieldError, FieldGroup } from "@/components/ui/field";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "@/components/ui/toast";
 
 const profileSchema = z.object({
