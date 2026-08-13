@@ -26,8 +26,8 @@ const navLinks = [
   { to: "/", label: "Home", role: "PUBLIC" },
   { to: "/about", label: "About", role: "PUBLIC" },
   { to: "/features", label: "Features", role: "PUBLIC" },
-  { to: "/service", label: "Services", role: "PUBLIC" },
-  { to: "/pricing", label: "Pricing", role: "PUBLIC" },
+  { to: "/services", label: "Services", role: "PUBLIC" },
+ 
 
   { to: "/contact", label: "Contact", role: "PUBLIC" },
   { to: "/admin", label: "Dashboard", role: "ADMIN" },
