@@ -1,7 +1,4 @@
 import { useForm, Controller } from "react-hook-form";
-
-
-
 import { useNavigate, Link } from "react-router";
 
 import {
@@ -20,13 +17,16 @@ import {
 } from "@/components/ui/field";
 
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
-import { Button } from "@base-ui/react";
 import { cn } from "@/lib/utils";
 import { useRegisterMutation } from "@/redux/features/auth/auth.api";
-import { toast, Toast } from "../ui/toast";
-import z from "zod";
+
+
+
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "../ui/toast";
 
 const registerSchema = z
   .object({
@@ -38,20 +38,12 @@ const registerSchema = z
       message: "Invalid email",
     }),
 
-    phone: z.string().min(10, {
-      message: "Invalid phone number",
-    }),
-
     password: z.string().min(8, {
       message: "Password too short",
     }),
 
     confirmPassword: z.string().min(8, {
       message: "Confirm password must be at least 8 characters",
-    }),
-
-    role: z.enum(["USER", "AGENT"], {
-      message: "Please select a role",
     }),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -70,10 +62,8 @@ export default function RegisterForm({ className, ...props }) {
     defaultValues: {
       name: "",
       email: "",
-      phone: "",
       password: "",
       confirmPassword: "",
-      role: "USER",
     },
   });
 
@@ -82,14 +72,13 @@ export default function RegisterForm({ className, ...props }) {
       const userInfo = {
         name: data.name,
         email: data.email,
-        phone: data.phone,
         password: data.password,
-        role: data.role,
+        role: "USER",
       };
 
       await register(userInfo).unwrap();
 
-      Toast.success("Account created successfully 🎉");
+      toast.success("Account created successfully 🎉");
 
       navigate("/", {
         state: {
@@ -97,7 +86,7 @@ export default function RegisterForm({ className, ...props }) {
         },
       });
     } catch (err) {
-      toast.error(err?.data?.message || "Registration failed");
+      console.log(err)
     }
   };
 
@@ -105,7 +94,7 @@ export default function RegisterForm({ className, ...props }) {
     <div
       className={cn(
         "min-h-screen flex items-center justify-center px-4 bg-muted/30",
-        className,
+        className
       )}
       {...props}
     >
@@ -128,7 +117,10 @@ export default function RegisterForm({ className, ...props }) {
           </CardHeader>
 
           <CardContent>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-4"
+            >
               <FieldGroup className="space-y-4">
                 <Controller
                   name="name"
@@ -137,10 +129,15 @@ export default function RegisterForm({ className, ...props }) {
                     <Field>
                       <FieldLabel>Name</FieldLabel>
 
-                      <Input {...field} placeholder="John Doe" />
+                      <Input
+                        {...field}
+                        placeholder="John Doe"
+                      />
 
                       {fieldState.error && (
-                        <FieldError errors={[fieldState.error]} />
+                        <FieldError
+                          errors={[fieldState.error]}
+                        />
                       )}
                     </Field>
                   )}
@@ -160,15 +157,13 @@ export default function RegisterForm({ className, ...props }) {
                       />
 
                       {fieldState.error && (
-                        <FieldError errors={[fieldState.error]} />
+                        <FieldError
+                          errors={[fieldState.error]}
+                        />
                       )}
                     </Field>
                   )}
                 />
-
-                
-
-               
 
                 <Controller
                   name="password"
@@ -184,7 +179,9 @@ export default function RegisterForm({ className, ...props }) {
                       />
 
                       {fieldState.error && (
-                        <FieldError errors={[fieldState.error]} />
+                        <FieldError
+                          errors={[fieldState.error]}
+                        />
                       )}
                     </Field>
                   )}
@@ -204,14 +201,19 @@ export default function RegisterForm({ className, ...props }) {
                       />
 
                       {fieldState.error && (
-                        <FieldError errors={[fieldState.error]} />
+                        <FieldError
+                          errors={[fieldState.error]}
+                        />
                       )}
                     </Field>
                   )}
                 />
               </FieldGroup>
 
-              <Button type="submit" className="h-11 w-full">
+              <Button
+                type="submit"
+                className="h-11 w-full"
+              >
                 Create account
               </Button>
             </form>
