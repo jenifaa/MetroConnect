@@ -26,7 +26,7 @@ import { cn } from "@/lib/utils";
 
 import { useLoginMutation } from "@/redux/features/auth/auth.api";
 import config from "@/config";
-import { toast } from "../ui/toast";
+// import { toast } from "../ui/toast";
 
 export function LoginForm({ className, ...props }) {
   const navigate = useNavigate();
@@ -43,24 +43,25 @@ export function LoginForm({ className, ...props }) {
     try {
       await login(data).unwrap();
 
-      toast.success("Welcome back 👋");
+      // toast.success("Welcome back 👋");
       navigate("/");
     } catch (err) {
-      const message = err?.data?.message;
+      console.log(err)
+      // const message = err?.data?.message;
 
-      if (message === "User is not verified") {
-        toast.error("Account not verified");
+      // if (message === "User is not verified") {
+       
 
-        navigate("/verify", {
-          state: {
-            email: data.email,
-          },
-        });
+      //   navigate("/verify", {
+      //     state: {
+      //       email: data.email,
+      //     },
+      //   });
 
-        return;
-      }
+      //   return;
+      // }
 
-      toast.error(message || "Login failed");
+     
     }
   };
 
