@@ -62,7 +62,7 @@ export function LoginForm({ className, ...props }) {
 
         <div className="absolute -bottom-40 left-1/3 h-96 w-96 rounded-full bg-blue-200/30 blur-3xl" />
 
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:40px_40px] opacity-30" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-size-[40px_40px] opacity-30" />
       </div>
 
       {/* Main Content */}
@@ -76,7 +76,7 @@ export function LoginForm({ className, ...props }) {
               className="inline-flex items-center gap-3 transition-transform duration-200 hover:scale-[1.02]"
             >
               {/* Logo */}
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 via-violet-600 to-blue-600 shadow-lg shadow-indigo-500/25">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-indigo-600 via-violet-600 to-blue-600 shadow-lg shadow-indigo-500/25">
                 <span className="text-xl font-black text-white">
                   M
                 </span>
@@ -98,7 +98,7 @@ export function LoginForm({ className, ...props }) {
           <Card className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white/95 shadow-2xl shadow-slate-900/10 backdrop-blur-xl">
 
             {/* Top Accent */}
-            <div className="h-1.5 w-full bg-gradient-to-r from-indigo-600 via-violet-600 to-blue-600" />
+            <div className="h-1.5 w-full bg-linear-to-r from-indigo-600 via-violet-600 to-blue-600" />
 
             <CardHeader className="px-7 pt-8 pb-5 sm:px-9">
               <div className="mb-3 inline-flex w-fit items-center rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-600">
@@ -259,7 +259,7 @@ export function LoginForm({ className, ...props }) {
                 {/* Login Button */}
                 <Button
                   type="submit"
-                  className="group relative h-12 w-full overflow-hidden rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-600 bg-[length:200%_100%] text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition-all duration-300 hover:bg-right hover:shadow-xl hover:shadow-indigo-500/30"
+                  className="group relative h-12 w-full overflow-hidden rounded-xl bg-linear-to-r from-indigo-600 via-violet-600 to-indigo-600 bg-size-[200%_100%] text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition-all duration-300 hover:bg-right hover:shadow-xl hover:shadow-indigo-500/30"
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2">
                     Sign in to MetroConnect
