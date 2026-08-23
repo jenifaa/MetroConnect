@@ -7,7 +7,7 @@ import {
 import { LoadingState, EmptyState, ErrorState } from "@/components/common/States";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { toast } from "@/components/ui/toast";
+// import { toast } from "@/components/ui/toast";
 
 export default function NotificationsPage() {
   const { data: notificationsResponse, isLoading, isError, refetch } = useGetNotificationsQuery(undefined);
@@ -20,18 +20,22 @@ export default function NotificationsPage() {
   const handleMarkRead = async (id) => {
     try {
       await markRead(id).unwrap();
-      toast.success("Notification marked as read");
+      // toast.success("Notification marked as read");
+      console.log("Notification marked as read");
     } catch (err) {
-      toast.error(err?.data?.message || "Failed to update notification");
+      // toast.error(err?.data?.message || "Failed to update notification");
+      console.log(err);
     }
   };
 
   const handleMarkAllRead = async () => {
     try {
       await markAllRead(undefined).unwrap();
-      toast.success("All notifications marked as read! 🎉");
+      // toast.success("All notifications marked as read! 🎉");
+      console.log("All notifications marked as read! 🎉");
     } catch (err) {
-      toast.error(err?.data?.message || "Failed to update notifications");
+      // toast.error(err?.data?.message || "Failed to update notifications");
+      console.log(err);
     }
   };
 

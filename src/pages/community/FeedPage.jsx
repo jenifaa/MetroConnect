@@ -23,7 +23,7 @@ import ConfirmDialog from "@/components/common/ConfirmDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { toast } from "@/components/ui/toast";
+// import { toast } from "@/components/ui/toast";
 
 const CATEGORIES = [
   "All",
@@ -89,7 +89,8 @@ export default function FeedPage() {
     try {
       await likePost(id).unwrap();
     } catch (err) {
-      toast.error(err?.data?.message || "Could not like post");
+      // toast.error(err?.data?.message || "Could not like post");
+      console.log(err);
     }
   };
 
@@ -97,9 +98,10 @@ export default function FeedPage() {
     if (!postToDelete) return;
     try {
       await deletePost(postToDelete).unwrap();
-      toast.success("Post deleted successfully");
+      // toast.success("Post deleted successfully");
     } catch (err) {
-      toast.error(err?.data?.message || "Could not delete post");
+      // toast.error(err?.data?.message || "Could not delete post");
+      console.log(err);
     } finally {
       setPostToDelete(null);
     }
@@ -109,9 +111,10 @@ export default function FeedPage() {
     if (!postToReport) return;
     try {
       await reportPost({ id: postToReport, reason: "Inappropriate Content" }).unwrap();
-      toast.success("Post reported to community moderators");
+      // toast.success("Post reported to community moderators");
     } catch (err) {
-      toast.error(err?.data?.message || "Could not submit report");
+      // toast.error(err?.data?.message || "Could not submit report");
+      console.log(err);
     } finally {
       setPostToReport(null);
     }

@@ -24,7 +24,7 @@ import ConfirmDialog from "@/components/common/ConfirmDialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/toast";
+// import { toast } from "@/components/ui/toast";
 
 export default function PostDetailPage() {
   const { postId } = useParams();
@@ -82,7 +82,8 @@ export default function PostDetailPage() {
     try {
       await likePost(post.id || post._id).unwrap();
     } catch (err) {
-      toast.error(err?.data?.message || "Could not upvote post");
+      // toast.error(err?.data?.message || "Could not upvote post");
+     console.log(err)
     }
   };
 
@@ -93,10 +94,12 @@ export default function PostDetailPage() {
     setIsSubmittingComment(true);
     try {
       await addComment({ id: post.id || post._id, content: commentText }).unwrap();
-      toast.success("Comment added");
+      // toast.success("Comment added");
+      console.log("Comment added");
       setCommentText("");
     } catch (err) {
-      toast.error(err?.data?.message || "Could not add comment");
+      // toast.error(err?.data?.message || "Could not add comment");
+      console.log(err);
     } finally {
       setIsSubmittingComment(false);
     }
@@ -106,9 +109,11 @@ export default function PostDetailPage() {
     if (!commentToDelete) return;
     try {
       await deleteComment({ postId: post.id || post._id, commentId: commentToDelete }).unwrap();
-      toast.success("Comment deleted");
+      // toast.success("Comment deleted");
+      console.log("Comment deleted");
     } catch (err) {
-      toast.error(err?.data?.message || "Could not remove comment");
+      // toast.error(err?.data?.message || "Could not remove comment");
+      console.log(err);
     } finally {
       setCommentToDelete(null);
     }
@@ -117,9 +122,11 @@ export default function PostDetailPage() {
   const handleReportPost = async () => {
     try {
       await reportPost({ id: post.id || post._id, reason: "Inappropriate" }).unwrap();
-      toast.success(" flagged for moderation");
+      // toast.success(" flagged for moderation");
+      console.log("Post flagged for moderation");
     } catch (err) {
-      toast.error(err?.data?.message || "Flagging failed");
+      // toast.error(err?.data?.message || "Flagging failed");
+      console.log(err);
     } finally {
       setPostToReport(false);
     }
@@ -275,7 +282,7 @@ export default function PostDetailPage() {
                         </Button>
                       )}
                     </div>
-                    <p className="text-xs md:text-sm text-muted-foreground leading-relaxed break-words">
+                    <p className="text-xs md:text-sm text-muted-foreground leading-relaxed wrap-break-word">
                       {comment.content}
                     </p>
                   </div>

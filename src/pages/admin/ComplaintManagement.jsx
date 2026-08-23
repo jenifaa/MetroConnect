@@ -8,7 +8,7 @@ import PageHeader from "@/components/common/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { toast } from "@/components/ui/toast";
+// import { toast } from "@/components/ui/toast";
 import { ShieldCheck, User, Clock,  Eye, Send } from "lucide-react";
 
 export default function ComplaintManagement() {
@@ -37,10 +37,11 @@ export default function ComplaintManagement() {
         status: statusVal,
         resolutionDetails: resolutionText,
       }).unwrap();
-      toast.success("Complaint resolved and status updated! 🎉");
+      // toast.success("Complaint resolved and status updated! 🎉");
       setActiveComplaint(null);
     } catch (err) {
-      toast.error(err?.data?.message || "Failed to update complaint resolution status");
+      // toast.error(err?.data?.message || "Failed to update complaint resolution status");
+   console.log(err)
     }
   };
 

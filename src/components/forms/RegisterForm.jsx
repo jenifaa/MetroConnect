@@ -24,7 +24,7 @@ import { useRegisterMutation } from "@/redux/features/auth/auth.api";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "../ui/toast";
+// import { toast } from "../ui/toast";
 import config from "@/config";
 
 const registerSchema = z
@@ -77,7 +77,7 @@ export default function RegisterForm({ className, ...props }) {
 
       await register(userInfo).unwrap();
 
-      toast.success("Account created successfully 🎉");
+      // toast.success("Account created successfully 🎉");
 
       navigate("/", {
         state: {

@@ -17,7 +17,7 @@ export default function withAuth(Component, requiredRole) {
       return <Navigate to="/unauthorized" replace />;
     }
 
-    console.log("Inside withAuth", data);
+    // console.log("Inside withAuth", data);
 
     return <Component />;
   };

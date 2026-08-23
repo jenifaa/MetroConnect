@@ -9,7 +9,7 @@ import PageHeader from "@/components/common/PageHeader";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { toast } from "@/components/ui/toast";
+// import { toast } from "@/components/ui/toast";
 import {  Trash2, Shield, Lock, Unlock } from "lucide-react";
 
 export default function UserManagement() {
@@ -29,9 +29,10 @@ export default function UserManagement() {
     const targetRole = userToPromote.role === "ADMIN" ? "USER" : "ADMIN";
     try {
       await updateUserStatus({ id: userToPromote.id || userToPromote._id, role: targetRole }).unwrap();
-      toast.success(`Role updated successfully to ${targetRole}!`);
+      // toast.success(`Role updated successfully to ${targetRole}!`);
     } catch (err) {
-      toast.error(err?.data?.message || "Failed to update role");
+      // toast.error(err?.data?.message || "Failed to update role");
+      console.log(err);
     } finally {
       setUserToPromote(null);
     }
@@ -42,9 +43,10 @@ export default function UserManagement() {
     const targetStatus = userToToggleStatus.status === "suspended" ? "active" : "suspended";
     try {
       await updateUserStatus({ id: userToToggleStatus.id || userToToggleStatus._id, status: targetStatus }).unwrap();
-      toast.success(`User status updated to ${targetStatus}!`);
+      // toast.success(`User status updated to ${targetStatus}!`);
     } catch (err) {
-      toast.error(err?.data?.message || "Failed to toggle status");
+      // toast.error(err?.data?.message || "Failed to toggle status");
+      console.log(err);
     } finally {
       setUserToToggleStatus(null);
     }
@@ -54,9 +56,10 @@ export default function UserManagement() {
     if (!userToDelete) return;
     try {
       await deleteUser(userToDelete).unwrap();
-      toast.success("User account deleted permanently");
+      // toast.success("User account deleted permanently");
     } catch (err) {
-      toast.error(err?.data?.message || "Could not delete account");
+      // toast.error(err?.data?.message || "Could not delete account");
+      console.log(err);
     } finally {
       setUserToDelete(null);
     }

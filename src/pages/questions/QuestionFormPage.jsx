@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Field, FieldLabel, FieldError, FieldGroup } from "@/components/ui/field";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { toast } from "@/components/ui/toast";
+// import { toast } from "@/components/ui/toast";
 
 const SUBJECTS = [
   "CSE",
@@ -48,10 +48,12 @@ export default function QuestionFormPage() {
   const onSubmit = async (data) => {
     try {
       await createQuestion(data).unwrap();
-      toast.success("Question submitted! 🎉");
+      // toast.success("Question submitted! 🎉");
+      console.log("Question submitted! 🎉");
       navigate("/questions");
     } catch (err) {
-      toast.error(err?.data?.message || "Could not publish question");
+      // toast.error(err?.data?.message || "Could not publish question");
+      console.log(err);
     }
   };
 

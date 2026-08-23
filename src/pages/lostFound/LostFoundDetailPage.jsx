@@ -19,7 +19,7 @@ import { LoadingState,  ErrorState } from "@/components/common/States";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { toast } from "@/components/ui/toast";
+// import { toast } from "@/components/ui/toast";
 
 export default function LostFoundDetailPage() {
   const { itemId } = useParams();
@@ -71,10 +71,12 @@ export default function LostFoundDetailPage() {
   const handleDelete = async () => {
     try {
       await deleteItem(item.id || item._id).unwrap();
-      toast.success("Listing deleted successfully");
+      // toast.success("Listing deleted successfully");
+      console.log("Listing deleted successfully");
       navigate("/lost-found");
     } catch (err) {
-      toast.error(err?.data?.message || "Could not delete listing");
+      // toast.error(err?.data?.message || "Could not delete listing");
+      console.log(err);
     } finally {
       setIsDeleting(false);
     }

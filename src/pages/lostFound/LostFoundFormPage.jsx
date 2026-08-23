@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Field, FieldLabel, FieldError, FieldGroup } from "@/components/ui/field";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { toast } from "@/components/ui/toast";
+// import { toast } from "@/components/ui/toast";
 
 const itemSchema = z.object({
   itemName: z.string().min(3, {
@@ -53,10 +53,12 @@ export default function LostFoundFormPage() {
   const onSubmit = async (data) => {
     try {
       await createItem(data).unwrap();
-      toast.success("Listing published successfully! 🎉");
+      // toast.success("Listing published successfully! 🎉");
+      console.log("Listing published successfully! 🎉");
       navigate("/lost-found");
     } catch (err) {
-      toast.error(err?.data?.message || "Could not publish listing");
+      // toast.error(err?.data?.message || "Could not publish listing");
+      console.log(err);
     }
   };
 

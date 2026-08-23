@@ -6,10 +6,10 @@ import { ArrowLeft, AlertTriangle, ShieldCheck, FileText } from "lucide-react";
 import { useCreateComplaintMutation } from "@/redux/features/complaint/complaint.api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Field, FieldLabel, FieldError, FieldGroup, FieldDescription } from "@/components/ui/field";
+import { Field, FieldLabel, FieldError, FieldGroup } from "@/components/ui/field";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { toast } from "@/components/ui/toast";
+// import { toast } from "@/components/ui/toast";
 
 const COMPLAINT_CATEGORIES = [
   "Academic",
@@ -52,10 +52,12 @@ export default function ComplaintFormPage() {
   const onSubmit = async (data) => {
     try {
       await createComplaint(data).unwrap();
-      toast.success("Complaint submitted successfully! 🎉");
+      // toast.success("Complaint submitted successfully! 🎉");
+      console.log("Complaint submitted successfully! 🎉");
       navigate("/complaints");
     } catch (err) {
-      toast.error(err?.data?.message || "Could not file complaint");
+      // toast.error(err?.data?.message || "Could not file complaint");
+      console.log(err);
     }
   };
 

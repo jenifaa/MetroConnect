@@ -19,7 +19,7 @@ import { LoadingState,  ErrorState } from "@/components/common/States";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/toast";
+// import { toast } from "@/components/ui/toast";
 
 export default function QuestionDetailPage() {
   const { questionId } = useParams();
@@ -75,10 +75,12 @@ export default function QuestionDetailPage() {
     setIsSubmitting(true);
     try {
       await addAnswer({ id: question.id || question._id, content: answerText }).unwrap();
-      toast.success("Answer posted successfully!");
+      // toast.success("Answer posted successfully!");
+      console.log("Answer posted successfully!");
       setAnswerText("");
     } catch (err) {
-      toast.error(err?.data?.message || "Could not publish answer");
+      // toast.error(err?.data?.message || "Could not publish answer");
+      console.log(err);
     } finally {
       setIsSubmitting(false);
     }
@@ -88,7 +90,8 @@ export default function QuestionDetailPage() {
     try {
       await upvoteAnswer(answerId).unwrap();
     } catch (err) {
-      toast.error(err?.data?.message || "Could not register upvote");
+      // toast.error(err?.data?.message || "Could not register upvote");
+      console.log(err);
     }
   };
 

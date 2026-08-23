@@ -36,7 +36,7 @@ export default function StudentDashboard() {
     {
       title: "Create Post",
       desc: "Share news or start a campus discussion",
-      href: "/posts/new",
+      href: "/user/posts/new",
       icon: MessageSquare,
       color: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-200/50",
     },

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field, FieldLabel, FieldError, FieldGroup } from "@/components/ui/field";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { toast } from "@/components/ui/toast";
+// import { toast } from "@/components/ui/toast";
 
 const passwordSchema = z
   .object({
@@ -46,10 +46,12 @@ export default function ChangePasswordPage() {
         oldPassword: data.oldPassword,
         newPassword: data.newPassword,
       }).unwrap();
-      toast.success("Password changed successfully! 🎉");
+      // toast.success("Password changed successfully! 🎉");
+      console.log("Password changed successfully! 🎉");
       navigate("/profile");
     } catch (err) {
-      toast.error(err?.data?.message || "Could not change password");
+      // toast.error(err?.data?.message || "Could not change password");
+      console.log(err);
     }
   };
 

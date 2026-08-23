@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field, FieldLabel, FieldError, FieldGroup } from "@/components/ui/field";
 import { Card, CardContent } from "@/components/ui/card";
-import { toast } from "@/components/ui/toast";
+// import { toast } from "@/components/ui/toast";
 
 const profileSchema = z.object({
   name: z.string().min(3, {
@@ -67,10 +67,12 @@ export default function ProfilePage() {
   const onSubmit = async (data) => {
     try {
       await updateProfile({ data }).unwrap();
-      toast.success("Profile updated successfully! 🎉");
+      // toast.success("Profile updated successfully! 🎉");
+      console.log("Profile updated successfully! 🎉");
       setIsEditing(false);
     } catch (err) {
-      toast.error(err?.data?.message || "Could not update profile info");
+      // toast.error(err?.data?.message || "Could not update profile info");
+      console.log(err);
     }
   };
 

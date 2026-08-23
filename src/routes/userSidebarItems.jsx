@@ -1,4 +1,5 @@
 
+import CreatePost from "@/pages/post/CreatePost";
 import NotificationsPage from "@/pages/student/NotificationsPage";
 import ProfilePage from "@/pages/student/ProfilePage";
 import StudentDashboard from "@/pages/student/StudentDashboard";
@@ -24,6 +25,11 @@ export const userSidebarItems = [
         title:"Notifications",
         url:"/user/notifications",
         component: NotificationsPage
+      },
+      {
+        title:"Create Post",
+        url:"/user/posts/new",
+        component: CreatePost
       }
     ],
   },

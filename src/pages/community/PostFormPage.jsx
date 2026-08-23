@@ -14,15 +14,15 @@ import { Input } from "@/components/ui/input";
 import { Field, FieldLabel, FieldError, FieldGroup } from "@/components/ui/field";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { toast } from "@/components/ui/toast";
+// import { toast } from "@/components/ui/toast";
 
 const CATEGORIES = [
-  "General",
-  "Academic",
-  "Discussion",
-  "Announcement",
-  "Campus",
-  "Help",
+  "GENERAL",
+  "ACADEMIC",
+  "DISCUSSION",
+  "ANNOUNCEMENT",
+  "CAMPUS",
+  "HELP",
   "Other",
 ];
 
@@ -78,14 +78,15 @@ export default function PostFormPage() {
     try {
       if (isEditMode) {
         await updatePost({ id: postId, ...data }).unwrap();
-        toast.success("Post updated successfully! 🎉");
+        // toast.success("Post updated successfully! 🎉");
       } else {
         await createPost(data).unwrap();
-        toast.success("Post published to community feed! 🎉");
+        // toast.success("Post published to community feed! 🎉");
       }
       navigate("/feed");
     } catch (err) {
-      toast.error(err?.data?.message || "Could not save community post");
+      // toast.error(err?.data?.message || "Could not save community post");
+      console.log(err)
     }
   };
 

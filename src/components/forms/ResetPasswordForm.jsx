@@ -1,6 +1,6 @@
 
 import { Controller, useForm } from "react-hook-form";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 import { Link, useSearchParams } from "react-router";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -50,7 +50,7 @@ export function ResetPasswordForm({ className, ...props }) {
 
   const onSubmit = async (data) => {
     if (!token) {
-      toast.error("Invalid or missing reset token");
+      // toast.error("Invalid or missing reset token");
       return;
     }
 
@@ -60,10 +60,10 @@ export function ResetPasswordForm({ className, ...props }) {
         password: data.password,
       }).unwrap();
 
-      toast.success(res?.message || "Password reset successfully");
+      // toast.success(res?.message || "Password reset successfully");
       form.reset();
     } catch (err) {
-      toast.error(err?.data?.message || "Unable to reset password");
+      // toast.error(err?.data?.message || "Unable to reset password");
     }
   };
 
