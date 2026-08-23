@@ -1,7 +1,7 @@
 
 
 import ComplaintManagement from "@/pages/admin/ComplaintManagement";
-import MyProfile from "@/pages/user/MyProfile";
+
 import { Analytics } from "@/utils/Analytics";
 
 
@@ -18,11 +18,11 @@ export const adminSidebarItems = [
         url: "/admin/analytics",
         component: Analytics,
       },
-      {
-        title: "My Profile",
-        url: "/admin/profile",
-        component: MyProfile,
-      },
+    //   {
+    //     title: "My Profile",
+    //     url: "/admin/profile",
+    //     component: MyProfile,
+    //   },
     ],
   },
   {

@@ -13,6 +13,7 @@ import DashboardLayout from "@/components/layout/DashboardLayout";
 import { generateRoutes } from "@/utils/generateRoutes";
 import { role } from "@/constant/role";
 import { adminSidebarItems } from "./adminSidebarItems";
+import { userSidebarItems } from "./userSidebarItems";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,15 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Navigate to="/admin/analytics" /> },
       ...generateRoutes(adminSidebarItems),
+    ],
+  },
+  {
+    Component: withAuth(DashboardLayout, role.user),
+    path: "/user",
+    children: [
+      { index: true, element: <Navigate to="/user/dashboard" /> },
+
+      ...generateRoutes(userSidebarItems),
     ],
   },
 ]);

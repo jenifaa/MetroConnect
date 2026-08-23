@@ -5,8 +5,7 @@ import {
   AlertTriangle,
   Megaphone,
   CheckCircle,
-  TrendingUp,
-  FileSpreadsheet,
+
   PlusCircle,
   HelpCircle,
   Eye,
@@ -14,7 +13,7 @@ import {
 import { useGetAdminDashboardQuery } from "@/redux/features/admin/admin.api";
 import { LoadingState, ErrorState } from "@/components/common/States";
 import PageHeader from "@/components/common/PageHeader";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 export default function AdminDashboard() {

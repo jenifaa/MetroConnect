@@ -8,9 +8,9 @@ import { LoadingState, EmptyState, ErrorState } from "@/components/common/States
 import PageHeader from "@/components/common/PageHeader";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { toast } from "@/components/ui/toast";
-import { ShieldAlert, Trash2, Shield, Eye, Lock, Unlock } from "lucide-react";
+import {  Trash2, Shield, Lock, Unlock } from "lucide-react";
 
 export default function UserManagement() {
   const { data: usersResponse, isLoading, isError, refetch } = useGetAdminUsersQuery(undefined);
