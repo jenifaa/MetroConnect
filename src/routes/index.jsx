@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import App from "../App";
 import HomePage from "../pages/Home/HomePage";
 import AboutUs from "../pages/publicPages/AboutUs";
@@ -8,6 +8,11 @@ import Login from "@/pages/authPages/Login";
 import Register from "@/pages/authPages/Register";
 import Features from "@/pages/publicPages/Features";
 import Services from "@/pages/publicPages/Services";
+import withAuth from "@/utils/withAuth";
+import DashboardLayout from "@/components/layout/DashboardLayout";
+import { generateRoutes } from "@/utils/generateRoutes";
+import { role } from "@/constant/role";
+import { adminSidebarItems } from "./adminSidebarItems";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +40,18 @@ const router = createBrowserRouter([
   {
     Component: Login,
     path: "/login",
+  },
+  {
+    Component: withAuth(
+      DashboardLayout,
+      (role.superAdmin ) || (role.admin ),
+    ),
+    path: "/admin",
+
+    children: [
+      { index: true, element: <Navigate to="/admin/analytics" /> },
+      ...generateRoutes(adminSidebarItems),
+    ],
   },
 ]);
 export default router;

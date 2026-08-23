@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { toast } from "@/components/ui/toast";
-import { ShieldCheck, User, Clock, AlertTriangle, Eye, Send } from "lucide-react";
+import { ShieldCheck, User, Clock,  Eye, Send } from "lucide-react";
 
 export default function ComplaintManagement() {
   const { data: complaintsResponse, isLoading, isError, refetch } = useGetComplaintsQuery(undefined);
