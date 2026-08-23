@@ -8,8 +8,8 @@ import {
   MessageSquare,
   LogOut,
   Menu,
-  X,
-  User,
+  X
+  
 } from "lucide-react";
 import { Button } from "../ui/button";
 import { ModeToggle } from "./MoodToggler";
