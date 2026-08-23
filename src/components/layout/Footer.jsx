@@ -12,7 +12,7 @@ import linkedin from "../../assets/icon/linkedin.png"
 
 export default function Footer() {
   return (
-    <footer className="border-t bg-background">
+    <footer className="border-t px-20 bg-background">
       {/* Top Section */}
       <div className="container mx-auto px-6 py-20">
         <div className="grid gap-12 lg:grid-cols-5 md:grid-cols-2">
@@ -21,7 +21,7 @@ export default function Footer() {
           <div className="lg:col-span-2 space-y-6">
             <div>
               <h2 className="text-3xl font-bold">
-                Dev<span className="text-primary">Hub</span>
+                Metro<span className="text-primary">Connect</span>
               </h2>
 
               <p className="mt-5 max-w-md text-muted-foreground leading-7">
