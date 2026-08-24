@@ -4,7 +4,7 @@ export const complaintApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getComplaints: builder.query({
       query: (params) => ({
-        url: "/complaints",
+        url: "/complains/me",
         method: "GET",
         params,
       }),
@@ -13,7 +13,7 @@ export const complaintApi = baseApi.injectEndpoints({
 
     getComplaintById: builder.query({
       query: (id) => ({
-        url: `/complaints/${id}`,
+        url: `/complains/${id}`,
         method: "GET",
       }),
       providesTags: ["COMPLAINT"],
@@ -21,7 +21,7 @@ export const complaintApi = baseApi.injectEndpoints({
 
     createComplaint: builder.mutation({
       query: (data) => ({
-        url: "/complaints",
+        url: "/complains",
         method: "POST",
         data,
       }),
@@ -30,7 +30,7 @@ export const complaintApi = baseApi.injectEndpoints({
 
     updateComplaintStatus: builder.mutation({
       query: ({ id, status, resolutionDetails }) => ({
-        url: `/complaints/${id}/status`,
+        url: `/complains/${id}/status`,
         method: "PATCH",
         data: { status, resolutionDetails },
       }),
