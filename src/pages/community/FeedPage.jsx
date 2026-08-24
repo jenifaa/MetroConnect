@@ -18,7 +18,11 @@ import {
   useReportPostMutation,
 } from "@/redux/features/post/post.api";
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
-import { LoadingState, EmptyState, ErrorState } from "@/components/common/States";
+import {
+  LoadingState,
+  EmptyState,
+  ErrorState,
+} from "@/components/common/States";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,7 +42,9 @@ const CATEGORIES = [
 
 export default function FeedPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
+  const [searchQuery, setSearchQuery] = useState(
+    searchParams.get("search") || "",
+  );
   const activeCategory = searchParams.get("category") || "All";
 
   // Redux API queries
@@ -87,9 +93,11 @@ export default function FeedPage() {
 
   const handleLike = async (id) => {
     try {
-      await likePost(id).unwrap();
+      await likePost({
+        id,
+        reactionType: "like",
+      }).unwrap();
     } catch (err) {
-      // toast.error(err?.data?.message || "Could not like post");
       console.log(err);
     }
   };
@@ -110,7 +118,10 @@ export default function FeedPage() {
   const handleReportConfirm = async () => {
     if (!postToReport) return;
     try {
-      await reportPost({ id: postToReport, reason: "Inappropriate Content" }).unwrap();
+      await reportPost({
+        id: postToReport,
+        reason: "Inappropriate Content",
+      }).unwrap();
       // toast.success("Post reported to community moderators");
     } catch (err) {
       // toast.error(err?.data?.message || "Could not submit report");
@@ -129,7 +140,8 @@ export default function FeedPage() {
             Campus discussions
           </h1>
           <p className="text-sm text-muted-foreground">
-            Share ideas, check updates, and build connections with Metropolitan University students.
+            Share ideas, check updates, and build connections with Metropolitan
+            University students.
           </p>
         </div>
         <Link to="/user/posts/new">
@@ -143,7 +155,10 @@ export default function FeedPage() {
       {/* Filter and Search Bar */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center justify-between">
         {/* Search */}
-        <form onSubmit={handleSearchSubmit} className="relative w-full sm:max-w-xs">
+        <form
+          onSubmit={handleSearchSubmit}
+          className="relative w-full sm:max-w-xs"
+        >
           <Search className="absolute left-3.5 top-3 h-4 w-4 text-muted-foreground" />
           <Input
             value={searchQuery}
@@ -189,7 +204,11 @@ export default function FeedPage() {
       ) : (
         <div className="space-y-4">
           {posts.map((post) => {
-            const isOwner = currentUser?.id === post?.author?.id || currentUser?._id === post?.author?._id || currentUser?.role === "ADMIN" || currentUser?.role === "SUPER_ADMIN";
+            const isOwner =
+              currentUser?.id === post?.author?.id ||
+              currentUser?._id === post?.author?._id ||
+              currentUser?.role === "ADMIN" ||
+              currentUser?.role === "SUPER_ADMIN";
             return (
               <Card
                 key={post.id || post._id}
@@ -200,7 +219,10 @@ export default function FeedPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <img
-                        src={post.author?.picture || "https://i.ibb.co.com/xttK0CDW/pp.jpg"}
+                        src={
+                          post.author?.picture ||
+                          "https://i.ibb.co.com/xttK0CDW/pp.jpg"
+                        }
                         alt="Author"
                         className="h-10 w-10 rounded-full object-cover border"
                       />
@@ -210,9 +232,13 @@ export default function FeedPage() {
                         </p>
                         <div className="flex items-center gap-2 text-xs text-muted-foreground">
                           <Clock className="h-3 w-3" />
-                          <span>{new Date(post.createdAt).toLocaleDateString()}</span>
+                          <span>
+                            {new Date(post.createdAt).toLocaleDateString()}
+                          </span>
                           <span>•</span>
-                          <span className="capitalize">{post.author?.role?.toLowerCase()}</span>
+                          <span className="capitalize">
+                            {post.author?.role?.toLowerCase()}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -225,7 +251,11 @@ export default function FeedPage() {
                       {isOwner && (
                         <div className="flex items-center gap-1 border-l pl-2">
                           <Link to={`/posts/${post.id || post._id}/edit`}>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 rounded-lg"
+                            >
                               <Edit2 className="h-3.5 w-3.5 text-muted-foreground hover:text-foreground" />
                             </Button>
                           </Link>

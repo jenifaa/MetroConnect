@@ -2,7 +2,6 @@ import { Link, useNavigate } from "react-router";
 
 import { Button } from "../ui/button";
 
-
 import logo from "../../assets/logo/logo.png";
 import {
   authApi,
@@ -27,9 +26,13 @@ const navLinks = [
   { to: "/about", label: "About", role: "PUBLIC" },
   { to: "/features", label: "Features", role: "PUBLIC" },
   { to: "/services", label: "Services", role: "PUBLIC" },
- 
 
   { to: "/contact", label: "Contact", role: "PUBLIC" },
+  {
+    to: "/all-posts",
+    label: "All Posts",
+    role: "USER",
+  },
   { to: "/admin", label: "Dashboard", role: "ADMIN" },
   { to: "/admin", label: "Dashboard", role: "SUPER_ADMIN" },
   { to: "/user", label: "Dashboard", role: "USER" },
@@ -56,13 +59,14 @@ export default function Navbar() {
   };
 
   return (
-    <header
-      className="fixed  top-0 z-50 w-full transition-all duration-300 "
-    >
+    <header className="fixed  top-0 z-50 w-full transition-all duration-300 ">
       <div className="container w-11/12 mx-auto flex h-16 items-center justify-between px-4 lg:px-6">
         {/* Logo */}
         <div className="flex items-center gap-3">
-          <Link to="/" className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-md">
+          <Link
+            to="/"
+            className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-md"
+          >
             <img
               src={logo}
               alt="Logo"

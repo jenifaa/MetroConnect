@@ -46,9 +46,12 @@ export const postApi = baseApi.injectEndpoints({
     }),
 
     likePost: builder.mutation({
-      query: (id) => ({
+      query: ({ id, reactionType }) => ({
         url: `/posts/${id}/reactions`,
         method: "POST",
+        data: {
+          reactionType,
+        },
       }),
       invalidatesTags: ["POST"],
     }),

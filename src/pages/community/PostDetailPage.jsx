@@ -67,7 +67,7 @@ export default function PostDetailPage() {
           onRetry={refetch}
         />
         <div className="text-center mt-4">
-          <Button onClick={() => navigate("/feed")} variant="outline" className="rounded-xl">
+          <Button onClick={() => navigate("/all-posts")} variant="outline" className="rounded-xl">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Feed
           </Button>
@@ -136,7 +136,7 @@ export default function PostDetailPage() {
     <div className="container mx-auto px-4 py-8 max-w-4xl space-y-6 mt-14">
       {/* Back button */}
       <div>
-        <Button onClick={() => navigate("/feed")} variant="ghost" className="rounded-xl gap-2 text-muted-foreground">
+        <Button onClick={() => navigate("/all-posts")} variant="ghost" className="rounded-xl gap-2 text-muted-foreground">
           <ArrowLeft className="h-4 w-4" />
           Back to Feed
         </Button>

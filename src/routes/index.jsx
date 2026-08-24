@@ -14,6 +14,8 @@ import { generateRoutes } from "@/utils/generateRoutes";
 import { role } from "@/constant/role";
 import { adminSidebarItems } from "./adminSidebarItems";
 import { userSidebarItems } from "./userSidebarItems";
+import AllPosts from "@/pages/post/AllPosts";
+import PostDetailPage from "@/pages/community/PostDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +33,14 @@ const router = createBrowserRouter([
       {
         Component: Services,
         path: "services",
+      },
+      {
+        Component: AllPosts,
+        path: "all-posts",
+      },
+      {
+        Component: PostDetailPage,
+        path: "posts/:id",
       },
     ],
   },

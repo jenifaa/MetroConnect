@@ -83,7 +83,7 @@ export default function PostFormPage() {
         await createPost(data).unwrap();
         // toast.success("Post published to community feed! 🎉");
       }
-      navigate("/feed");
+      navigate("/");
     } catch (err) {
       // toast.error(err?.data?.message || "Could not save community post");
       console.log(err)
