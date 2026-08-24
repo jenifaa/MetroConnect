@@ -132,7 +132,7 @@ export default function FeedPage() {
             Share ideas, check updates, and build connections with Metropolitan University students.
           </p>
         </div>
-        <Link to="/posts/new">
+        <Link to="/user/posts/new">
           <Button className="rounded-xl gap-2 font-semibold shadow-md">
             <PlusCircle className="h-4 w-4" />
             Create Post
@@ -182,7 +182,7 @@ export default function FeedPage() {
               : "Be the first to share an update or start a discussion on campus!"
           }
         >
-          <Link to="/posts/new">
+          <Link to="/user/posts/new">
             <Button className="rounded-xl">Create a Post</Button>
           </Link>
         </EmptyState>

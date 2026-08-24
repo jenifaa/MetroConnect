@@ -67,43 +67,43 @@ const adminNavLinks = [
 
 const studentNavLinks = [
   {
-    to: "/dashboard",
+    to: "/user/dashboard",
     label: "Dashboard",
     icon: LayoutDashboard,
     end: true,
   },
   {
-    to: "/dashboard/profile",
+    to: "/user/dashboard/profile",
     label: "My Profile",
     icon: User,
   },
   {
-    to: "/dashboard/posts",
+    to: "/user/dashboard/posts",
     label: "My Posts",
     icon: FileText,
   },
   {
-    to: "/dashboard/announcements",
+    to: "/user/dashboard/announcements",
     label: "Announcements",
     icon: Megaphone,
   },
   {
-    to: "/dashboard/events",
+    to: "/user/dashboard/events",
     label: "Events",
     icon: CalendarDays,
   },
   {
-    to: "/dashboard/complaints",
+    to: "/user/dashboard/complaints",
     label: "My Complaints",
     icon: AlertTriangle,
   },
   {
-    to: "/dashboard/notifications",
+    to: "/user/dashboard/notifications",
     label: "Notifications",
     icon: Bell,
   },
   {
-    to: "/dashboard/settings",
+    to: "/user/dashboard/settings",
     label: "Settings",
     icon: Settings,
   },
