@@ -5,15 +5,14 @@ import {
   PlusCircle,
   Clock,
   MapPin,
-  HelpCircle,
-  Tag,
+ 
   ArrowRight,
 } from "lucide-react";
 import { useGetLostFoundQuery } from "@/redux/features/lost-found/lostFound.api";
 import { LoadingState, EmptyState, ErrorState } from "@/components/common/States";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 
 export default function LostFoundListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
