@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import {
-  FileText,
   Search,
   PlusCircle,
   Clock,

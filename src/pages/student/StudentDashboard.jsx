@@ -184,7 +184,7 @@ export default function StudentDashboard() {
               <h2 className="text-lg font-bold tracking-tight text-foreground">
                 Complaint Status Tracker
               </h2>
-              <Link to="/complaints" className="text-xs font-semibold text-primary hover:underline">
+              <Link to="/user/complaints" className="text-xs font-semibold text-primary hover:underline">
                 View All Complaints
               </Link>
             </div>
@@ -254,7 +254,7 @@ export default function StudentDashboard() {
               )}
             </div>
             {announcements.length > 0 && (
-              <Link to="/announcements" className="block text-center text-xs font-semibold text-primary hover:underline pt-2">
+              <Link to="/user/announcements" className="block text-center text-xs font-semibold text-primary hover:underline pt-2">
                 Browse Announcements Archive
               </Link>
             )}
