@@ -21,12 +21,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import {
   Dialog,
@@ -80,17 +75,12 @@ function Announcement() {
   // GET ANNOUNCEMENTS
   // =========================================================
 
-  const {
-    data,
-    isLoading,
-    isFetching,
-    isError,
-    refetch,
-  } = useGetAnnouncementsQuery({
-    searchTerm: searchTerm || undefined,
-    page,
-    limit: 8,
-  });
+  const { data, isLoading, isFetching, isError, refetch } =
+    useGetAnnouncementsQuery({
+      searchTerm: searchTerm || undefined,
+      page,
+      limit: 8,
+    });
 
   // =========================================================
   // MUTATIONS
@@ -114,14 +104,9 @@ function Announcement() {
   const meta = data?.meta;
 
   const totalAnnouncements =
-    meta?.total ||
-    meta?.totalItems ||
-    announcements.length;
+    meta?.total || meta?.totalItems || announcements.length;
 
-  const totalPages =
-    meta?.totalPage ||
-    meta?.totalPages ||
-    1;
+  const totalPages = meta?.totalPage || meta?.totalPages || 1;
 
   const visibleCount = announcements.length;
 
@@ -131,9 +116,7 @@ function Announcement() {
     }
 
     return [...announcements].sort(
-      (a, b) =>
-        new Date(b.createdAt) -
-        new Date(a.createdAt),
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
     )[0];
   }, [announcements]);
 
@@ -186,19 +169,11 @@ function Announcement() {
         description,
       };
 
-      console.log(
-        "Creating announcement with payload:",
-        payload,
-      );
+      console.log("Creating announcement with payload:", payload);
 
-      const response = await createAnnouncement(
-        payload,
-      ).unwrap();
+      const response = await createAnnouncement(payload).unwrap();
 
-      console.log(
-        "Announcement created successfully:",
-        response,
-      );
+      console.log("Announcement created successfully:", response);
 
       setCreateOpen(false);
       resetForm();
@@ -206,10 +181,7 @@ function Announcement() {
 
       await refetch();
     } catch (error) {
-      console.error(
-        "Failed to create announcement:",
-        error,
-      );
+      console.log("Failed to create announcement:", error);
 
       console.error(
         "Backend error message:",
@@ -218,11 +190,9 @@ function Announcement() {
           "Failed to create announcement.",
       );
 
-      console.error(
+      console.log(
         "Validation errors:",
-        error?.data?.err ||
-          error?.data?.errorSources ||
-          null,
+        error?.data?.err || error?.data?.errorSources || null,
       );
     }
   };
@@ -236,8 +206,7 @@ function Announcement() {
 
     setFormData({
       title: announcement?.title || "",
-      description:
-        announcement?.description || "",
+      description: announcement?.description || "",
     });
 
     setEditOpen(true);
@@ -251,9 +220,7 @@ function Announcement() {
     event.preventDefault();
 
     if (!selectedAnnouncement?._id) {
-      console.error(
-        "Announcement ID is missing.",
-      );
+      console.error("Announcement ID is missing.");
       return;
     }
 
@@ -261,16 +228,12 @@ function Announcement() {
     const description = formData.description.trim();
 
     if (!title) {
-      console.log(
-        "Announcement title is required.",
-      );
+      console.log("Announcement title is required.");
       return;
     }
 
     if (!description) {
-      console.log(
-        "Announcement description is required.",
-      );
+      console.log("Announcement description is required.");
       return;
     }
 
@@ -283,30 +246,18 @@ function Announcement() {
         },
       };
 
-      console.log(
-        "Updating announcement with payload:",
-        payload,
-      );
+      console.log("Updating announcement with payload:", payload);
 
-      const response =
-        await updateAnnouncement(
-          payload,
-        ).unwrap();
+      const response = await updateAnnouncement(payload).unwrap();
 
-      console.log(
-        "Announcement updated successfully:",
-        response,
-      );
+      console.log("Announcement updated successfully:", response);
 
       setEditOpen(false);
       resetForm();
 
       await refetch();
     } catch (error) {
-      console.error(
-        "Failed to update announcement:",
-        error,
-      );
+      console.error("Failed to update announcement:", error);
 
       console.error(
         "Backend error message:",
@@ -317,9 +268,7 @@ function Announcement() {
 
       console.error(
         "Validation errors:",
-        error?.data?.err ||
-          error?.data?.errorSources ||
-          null,
+        error?.data?.err || error?.data?.errorSources || null,
       );
     }
   };
@@ -339,46 +288,29 @@ function Announcement() {
 
   const handleDelete = async () => {
     if (!selectedAnnouncement?._id) {
-      console.error(
-        "Announcement ID is missing.",
-      );
+      console.error("Announcement ID is missing.");
       return;
     }
 
     try {
-      console.log(
-        "Deleting announcement:",
+      console.log("Deleting announcement:", selectedAnnouncement._id);
+
+      const response = await deleteAnnouncement(
         selectedAnnouncement._id,
-      );
+      ).unwrap();
 
-      const response =
-        await deleteAnnouncement(
-          selectedAnnouncement._id,
-        ).unwrap();
-
-      console.log(
-        "Announcement deleted successfully:",
-        response,
-      );
+      console.log("Announcement deleted successfully:", response);
 
       setDeleteOpen(false);
       setSelectedAnnouncement(null);
 
-      if (
-        announcements.length === 1 &&
-        page > 1
-      ) {
-        setPage(
-          (previous) => previous - 1,
-        );
+      if (announcements.length === 1 && page > 1) {
+        setPage((previous) => previous - 1);
       }
 
       await refetch();
     } catch (error) {
-      console.error(
-        "Failed to delete announcement:",
-        error,
-      );
+      console.error("Failed to delete announcement:", error);
 
       console.error(
         "Backend error message:",
@@ -404,14 +336,11 @@ function Announcement() {
       return "Unknown date";
     }
 
-    return parsedDate.toLocaleDateString(
-      "en-US",
-      {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      },
-    );
+    return parsedDate.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
   };
 
   // =========================================================
@@ -461,7 +390,7 @@ function Announcement() {
 
   if (isError) {
     return (
-      <div className="flex min-h-[500px] items-center justify-center">
+      <div className="flex min-h-125 items-center justify-center">
         <Card className="w-full max-w-md">
           <CardContent className="flex flex-col items-center justify-center p-10 text-center">
             <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-destructive/10">
@@ -473,14 +402,10 @@ function Announcement() {
             </h2>
 
             <p className="mt-2 text-sm text-muted-foreground">
-              Something went wrong while loading
-              announcements.
+              Something went wrong while loading announcements.
             </p>
 
-            <Button
-              className="mt-6"
-              onClick={() => refetch()}
-            >
+            <Button className="mt-6" onClick={() => refetch()}>
               Try Again
             </Button>
           </CardContent>
@@ -514,15 +439,12 @@ function Announcement() {
                   Announcements
                 </h1>
 
-                <Badge variant="secondary">
-                  Admin
-                </Badge>
+                <Badge variant="secondary">Admin</Badge>
               </div>
 
               <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-                Create and manage important university
-                announcements. Every announcement is
-                automatically delivered to your users.
+                Create and manage important university announcements. Every
+                announcement is automatically delivered to your users.
               </p>
             </div>
           </div>
@@ -555,9 +477,7 @@ function Announcement() {
                   Total Announcements
                 </p>
 
-                <p className="mt-2 text-3xl font-bold">
-                  {totalAnnouncements}
-                </p>
+                <p className="mt-2 text-3xl font-bold">{totalAnnouncements}</p>
 
                 <p className="mt-1 text-xs text-muted-foreground">
                   Published announcements
@@ -580,9 +500,7 @@ function Announcement() {
                   Current Results
                 </p>
 
-                <p className="mt-2 text-3xl font-bold">
-                  {visibleCount}
-                </p>
+                <p className="mt-2 text-3xl font-bold">{visibleCount}</p>
 
                 <p className="mt-1 text-xs text-muted-foreground">
                   Showing on this page
@@ -605,9 +523,7 @@ function Announcement() {
                   Audience
                 </p>
 
-                <p className="mt-2 text-2xl font-bold">
-                  All Users
-                </p>
+                <p className="mt-2 text-2xl font-bold">All Users</p>
 
                 <p className="mt-1 text-xs text-muted-foreground">
                   Notifications are sent automatically
@@ -637,9 +553,7 @@ function Announcement() {
                 placeholder="Search announcements by title or description..."
                 className="h-11 pl-9"
                 onChange={(event) => {
-                  setSearchTerm(
-                    event.target.value,
-                  );
+                  setSearchTerm(event.target.value);
                   setPage(1);
                 }}
               />
@@ -658,45 +572,37 @@ function Announcement() {
           LATEST ANNOUNCEMENT
       ====================================================== */}
 
-      {!searchTerm &&
-        latestAnnouncement &&
-        page === 1 && (
-          <Card className="overflow-hidden border-primary/20">
-            <CardContent className="p-0">
-              <div className="flex flex-col lg:flex-row">
-                <div className="flex w-full items-center justify-center bg-primary/5 p-8 lg:w-1/4">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-primary/10">
-                    <Bell className="h-9 w-9 text-primary" />
-                  </div>
-                </div>
-
-                <div className="flex-1 p-6">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <Badge>
-                      Latest Announcement
-                    </Badge>
-
-                    <span className="text-xs text-muted-foreground">
-                      {formatDate(
-                        latestAnnouncement.createdAt,
-                      )}
-                    </span>
-                  </div>
-
-                  <h2 className="mt-3 text-xl font-bold">
-                    {latestAnnouncement.title}
-                  </h2>
-
-                  <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted-foreground">
-                    {
-                      latestAnnouncement.description
-                    }
-                  </p>
+      {!searchTerm && latestAnnouncement && page === 1 && (
+        <Card className="overflow-hidden border-primary/20">
+          <CardContent className="p-0">
+            <div className="flex flex-col lg:flex-row">
+              <div className="flex w-full items-center justify-center bg-primary/5 p-8 lg:w-1/4">
+                <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-primary/10">
+                  <Bell className="h-9 w-9 text-primary" />
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        )}
+
+              <div className="flex-1 p-6">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge>Latest Announcement</Badge>
+
+                  <span className="text-xs text-muted-foreground">
+                    {formatDate(latestAnnouncement.createdAt)}
+                  </span>
+                </div>
+
+                <h2 className="mt-3 text-xl font-bold">
+                  {latestAnnouncement.title}
+                </h2>
+
+                <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted-foreground">
+                  {latestAnnouncement.description}
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* =====================================================
           SECTION HEADER
@@ -704,9 +610,7 @@ function Announcement() {
 
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold">
-            All Announcements
-          </h2>
+          <h2 className="text-lg font-semibold">All Announcements</h2>
 
           <p className="text-sm text-muted-foreground">
             Manage published announcements.
@@ -720,7 +624,7 @@ function Announcement() {
 
       {announcements.length === 0 ? (
         <Card>
-          <CardContent className="flex min-h-[360px] flex-col items-center justify-center p-8 text-center">
+          <CardContent className="flex min-h-90 flex-col items-center justify-center p-8 text-center">
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-muted">
               <Bell className="h-8 w-8 text-muted-foreground" />
             </div>
@@ -751,138 +655,113 @@ function Announcement() {
         </Card>
       ) : (
         <div className="grid gap-5 lg:grid-cols-2">
-          {announcements.map(
-            (announcement) => {
-              const creator =
-                announcement?.createdBy;
+          {announcements.map((announcement) => {
+            const creator = announcement?.createdBy;
 
-              return (
-                <Card
-                  key={announcement._id}
-                  className="group overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
-                >
-                  {/* Card Header */}
-                  <CardHeader className="pb-4">
-                    <div className="flex items-start gap-4">
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10">
-                        <Bell className="h-5 w-5 text-primary" />
-                      </div>
+            return (
+              <Card
+                key={announcement._id}
+                className="group overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+              >
+                {/* Card Header */}
+                <CardHeader className="pb-4">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+                      <Bell className="h-5 w-5 text-primary" />
+                    </div>
 
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="min-w-0">
-                            <CardTitle className="line-clamp-2 text-lg leading-6">
-                              {
-                                announcement.title
-                              }
-                            </CardTitle>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <CardTitle className="line-clamp-2 text-lg leading-6">
+                            {announcement.title}
+                          </CardTitle>
 
-                            <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                              <span className="flex items-center gap-1">
-                                <CalendarDays className="h-3.5 w-3.5" />
+                          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <CalendarDays className="h-3.5 w-3.5" />
 
-                                {formatDate(
-                                  announcement.createdAt,
-                                )}
-                              </span>
+                              {formatDate(announcement.createdAt)}
+                            </span>
 
-                              <span>•</span>
+                            <span>•</span>
 
-                              <span>
-                                {creator?.name ||
-                                  "Admin"}
-                              </span>
-                            </div>
+                            <span>{creator?.name || "Admin"}</span>
                           </div>
-
-                          <Badge
-                            variant="secondary"
-                            className="shrink-0"
-                          >
-                            Published
-                          </Badge>
                         </div>
+
+                        <Badge variant="secondary" className="shrink-0">
+                          Published
+                        </Badge>
                       </div>
                     </div>
-                  </CardHeader>
+                  </div>
+                </CardHeader>
 
-                  {/* Card Content */}
-                  <CardContent className="space-y-5">
-                    <p className="line-clamp-4 whitespace-pre-wrap text-sm leading-6 text-muted-foreground">
-                      {
-                        announcement.description
-                      }
-                    </p>
+                {/* Card Content */}
+                <CardContent className="space-y-5">
+                  <p className="line-clamp-4 whitespace-pre-wrap text-sm leading-6 text-muted-foreground">
+                    {announcement.description}
+                  </p>
 
-                    {/* Notification Information */}
-                    <div className="flex items-center gap-3 rounded-lg bg-muted/50 px-3 py-3">
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                        <Send className="h-4 w-4 text-primary" />
-                      </div>
-
-                      <div>
-                        <p className="text-xs font-medium">
-                          Notification Delivered
-                        </p>
-
-                        <p className="text-xs text-muted-foreground">
-                          Sent automatically to users
-                        </p>
-                      </div>
+                  {/* Notification Information */}
+                  <div className="flex items-center gap-3 rounded-lg bg-muted/50 px-3 py-3">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                      <Send className="h-4 w-4 text-primary" />
                     </div>
 
-                    {/* Actions */}
-                    <div className="flex flex-wrap gap-2 border-t pt-4">
-                      {/* VIEW */}
-                      <Button
-                        asChild
-                        variant="outline"
-                        size="sm"
-                        className="flex-1 sm:flex-none"
-                      >
-                        <Link
-                          to={`/announcements/${announcement._id}`}
-                        >
-                          <Eye className="mr-2 h-4 w-4" />
-                          View
-                        </Link>
-                      </Button>
+                    <div>
+                      <p className="text-xs font-medium">
+                        Notification Delivered
+                      </p>
 
-                      {/* EDIT */}
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex-1 sm:flex-none"
-                        onClick={() =>
-                          openEdit(
-                            announcement,
-                          )
-                        }
-                      >
-                        <Pencil className="mr-2 h-4 w-4" />
-                        Edit
-                      </Button>
-
-                      {/* DELETE */}
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        className="flex-1 sm:flex-none"
-                        onClick={() =>
-                          openDelete(
-                            announcement,
-                          )
-                        }
-                      >
-                        <Trash2 className="mr-2 h-4 w-4" />
-                        Delete
-                      </Button>
+                      <p className="text-xs text-muted-foreground">
+                        Sent automatically to users
+                      </p>
                     </div>
-                  </CardContent>
-                </Card>
-              );
-            },
-          )}
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex flex-wrap gap-2 border-t pt-4">
+                    {/* VIEW */}
+                    <Button
+                      asChild
+                      variant="outline"
+                      size="sm"
+                      className="flex-1 sm:flex-none"
+                    >
+                      <Link to={`/announcements/${announcement._id}`}>
+                        <Eye className="mr-2 h-4 w-4" />
+                        View
+                      </Link>
+                    </Button>
+
+                    {/* EDIT */}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex-1 sm:flex-none"
+                      onClick={() => openEdit(announcement)}
+                    >
+                      <Pencil className="mr-2 h-4 w-4" />
+                      Edit
+                    </Button>
+
+                    {/* DELETE */}
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      className="flex-1 sm:flex-none"
+                      onClick={() => openDelete(announcement)}
+                    >
+                      <Trash2 className="mr-2 h-4 w-4" />
+                      Delete
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       )}
 
@@ -900,15 +779,8 @@ function Announcement() {
             <Button
               variant="outline"
               size="sm"
-              disabled={
-                page <= 1 || isFetching
-              }
-              onClick={() =>
-                setPage(
-                  (current) =>
-                    current - 1,
-                )
-              }
+              disabled={page <= 1 || isFetching}
+              onClick={() => setPage((current) => current - 1)}
             >
               <ChevronLeft className="mr-1 h-4 w-4" />
               Previous
@@ -917,16 +789,8 @@ function Announcement() {
             <Button
               variant="outline"
               size="sm"
-              disabled={
-                page >= totalPages ||
-                isFetching
-              }
-              onClick={() =>
-                setPage(
-                  (current) =>
-                    current + 1,
-                )
-              }
+              disabled={page >= totalPages || isFetching}
+              onClick={() => setPage((current) => current + 1)}
             >
               Next
               <ChevronRight className="ml-1 h-4 w-4" />
@@ -949,21 +813,18 @@ function Announcement() {
           }
         }}
       >
-        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[620px]">
+        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-155">
           <form onSubmit={handleCreate}>
             <DialogHeader>
               <div className="mb-2 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
                 <Megaphone className="h-5 w-5 text-primary" />
               </div>
 
-              <DialogTitle>
-                Create Announcement
-              </DialogTitle>
+              <DialogTitle>Create Announcement</DialogTitle>
 
               <DialogDescription>
-                Create an important announcement.
-                Users will automatically receive a
-                notification after it is published.
+                Create an important announcement. Users will automatically
+                receive a notification after it is published.
               </DialogDescription>
             </DialogHeader>
 
@@ -981,9 +842,7 @@ function Announcement() {
                   id="announcement-title"
                   name="title"
                   value={formData.title}
-                  onChange={
-                    handleInputChange
-                  }
+                  onChange={handleInputChange}
                   placeholder="e.g. Final Exam Schedule Released"
                   disabled={isCreating}
                   maxLength={200}
@@ -1007,12 +866,8 @@ function Announcement() {
                 <Textarea
                   id="announcement-description"
                   name="description"
-                  value={
-                    formData.description
-                  }
-                  onChange={
-                    handleInputChange
-                  }
+                  value={formData.description}
+                  onChange={handleInputChange}
                   placeholder="Write the announcement details here..."
                   rows={8}
                   disabled={isCreating}
@@ -1021,10 +876,7 @@ function Announcement() {
                 />
 
                 <p className="text-right text-xs text-muted-foreground">
-                  {
-                    formData.description
-                      .length
-                  }
+                  {formData.description.length}
                   /10000
                 </p>
               </div>
@@ -1037,15 +889,12 @@ function Announcement() {
                   </div>
 
                   <div>
-                    <p className="text-sm font-semibold">
-                      User Notification
-                    </p>
+                    <p className="text-sm font-semibold">User Notification</p>
 
                     <p className="mt-1 text-xs leading-5 text-muted-foreground">
-                      Once published, the announcement
-                      will be created and your backend
-                      notification system can notify users
-                      according to your configured service.
+                      Once published, the announcement will be created and your
+                      backend notification system can notify users according to
+                      your configured service.
                     </p>
                   </div>
                 </div>
@@ -1065,15 +914,10 @@ function Announcement() {
                 Cancel
               </Button>
 
-              <Button
-                type="submit"
-                disabled={isCreating}
-              >
+              <Button type="submit" disabled={isCreating}>
                 <Send className="mr-2 h-4 w-4" />
 
-                {isCreating
-                  ? "Publishing..."
-                  : "Create & Send"}
+                {isCreating ? "Publishing..." : "Create & Send"}
               </Button>
             </DialogFooter>
           </form>
@@ -1094,20 +938,17 @@ function Announcement() {
           }
         }}
       >
-        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[620px]">
+        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-155">
           <form onSubmit={handleUpdate}>
             <DialogHeader>
               <div className="mb-2 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
                 <Pencil className="h-5 w-5 text-primary" />
               </div>
 
-              <DialogTitle>
-                Edit Announcement
-              </DialogTitle>
+              <DialogTitle>Edit Announcement</DialogTitle>
 
               <DialogDescription>
-                Update the announcement title or
-                description.
+                Update the announcement title or description.
               </DialogDescription>
             </DialogHeader>
 
@@ -1125,9 +966,7 @@ function Announcement() {
                   id="edit-announcement-title"
                   name="title"
                   value={formData.title}
-                  onChange={
-                    handleInputChange
-                  }
+                  onChange={handleInputChange}
                   disabled={isUpdating}
                   maxLength={200}
                   required
@@ -1150,12 +989,8 @@ function Announcement() {
                 <Textarea
                   id="edit-announcement-description"
                   name="description"
-                  value={
-                    formData.description
-                  }
-                  onChange={
-                    handleInputChange
-                  }
+                  value={formData.description}
+                  onChange={handleInputChange}
                   rows={8}
                   disabled={isUpdating}
                   maxLength={10000}
@@ -1163,10 +998,7 @@ function Announcement() {
                 />
 
                 <p className="text-right text-xs text-muted-foreground">
-                  {
-                    formData.description
-                      .length
-                  }
+                  {formData.description.length}
                   /10000
                 </p>
               </div>
@@ -1185,15 +1017,10 @@ function Announcement() {
                 Cancel
               </Button>
 
-              <Button
-                type="submit"
-                disabled={isUpdating}
-              >
+              <Button type="submit" disabled={isUpdating}>
                 <Pencil className="mr-2 h-4 w-4" />
 
-                {isUpdating
-                  ? "Updating..."
-                  : "Save Changes"}
+                {isUpdating ? "Updating..." : "Save Changes"}
               </Button>
             </DialogFooter>
           </form>
@@ -1210,9 +1037,7 @@ function Announcement() {
           setDeleteOpen(open);
 
           if (!open) {
-            setSelectedAnnouncement(
-              null,
-            );
+            setSelectedAnnouncement(null);
           }
         }}
       >
@@ -1222,35 +1047,26 @@ function Announcement() {
               <Trash2 className="h-5 w-5 text-destructive" />
             </div>
 
-            <AlertDialogTitle>
-              Delete Announcement?
-            </AlertDialogTitle>
+            <AlertDialogTitle>Delete Announcement?</AlertDialogTitle>
 
             <AlertDialogDescription>
               Are you sure you want to delete{" "}
               <span className="font-medium text-foreground">
                 "{selectedAnnouncement?.title}"
               </span>
-              ? This announcement will no longer
-              be available to users.
+              ? This announcement will no longer be available to users.
             </AlertDialogDescription>
           </AlertDialogHeader>
 
           <AlertDialogFooter>
-            <AlertDialogCancel
-              disabled={isDeleting}
-            >
-              Cancel
-            </AlertDialogCancel>
+            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
 
             <AlertDialogAction
               onClick={handleDelete}
               disabled={isDeleting}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              {isDeleting
-                ? "Deleting..."
-                : "Delete Announcement"}
+              {isDeleting ? "Deleting..." : "Delete Announcement"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
