@@ -49,7 +49,7 @@ export default function ComplaintDetailPage() {
     switch (status) {
       case "Resolved":
         return "bg-green-500/10 text-green-700 dark:text-green-400 border-green-200";
-      case "Under Review":
+      case "In Progress":
         return "bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-200";
       case "Rejected":
         return "bg-red-500/10 text-red-700 dark:text-red-400 border-red-200";
@@ -60,7 +60,7 @@ export default function ComplaintDetailPage() {
 
   const getStatusStep = (status) => {
     switch (status) {
-      case "Under Review":
+      case "In Progress":
         return 2;
       case "Resolved":
       case "Rejected":
@@ -185,7 +185,7 @@ export default function ComplaintDetailPage() {
       </Card>
 
       {/* Admin feedback / Resolution comments */}
-      {complaint.resolutionDetails && (
+      {complaint.adminResponse && (
         <Card className="border border-muted rounded-3xl overflow-hidden shadow-xs border-green-200/50 dark:border-green-950/30">
           <div className="bg-green-500/5 p-4 border-b border-green-200/30 dark:bg-green-950/10 flex items-center gap-2">
             {complaint.status === "Rejected" ? (
@@ -206,7 +206,7 @@ export default function ComplaintDetailPage() {
           </div>
           <CardContent className="p-6">
             <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
-              {complaint.resolutionDetails}
+              {complaint.adminResponse}
             </p>
           </CardContent>
         </Card>

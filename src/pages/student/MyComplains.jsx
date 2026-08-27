@@ -449,7 +449,7 @@ function MyComplains() {
                         asChild
                       >
                         <Link
-                          to={`/user/complaints/${complaint._id}`}
+                          to={`/complaints/${complaint._id}`}
                         >
                           View Details
                         </Link>

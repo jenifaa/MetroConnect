@@ -4,7 +4,7 @@ import LostFoundFormPage from "@/pages/lostFound/LostFoundFormPage";
 import CreatePost from "@/pages/post/CreatePost";
 
 import QuestionFormPage from "@/pages/questions/QuestionFormPage";
-import Announcement from "@/pages/student/Announcement";
+import AnnouncementsListPage from "@/pages/announcements/AnnouncementsListPage";
 import Events from "@/pages/student/Events";
 import MyComplains from "@/pages/student/MyComplains";
 import MyPosts from "@/pages/student/MyPosts";
@@ -58,7 +58,7 @@ export const userSidebarItems = [
       {
         title:"Announcements",
         url:"/user/announcements",
-        component: Announcement
+        component: AnnouncementsListPage
       },
       {
         title:"Events",

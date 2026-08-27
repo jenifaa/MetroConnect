@@ -34,11 +34,12 @@ import logo from "../../assets/logo/logo.png";
 
 const adminNavLinks = [
   {
-    to: "/admin",
+    to: "/admin/analytics",
     label: "Overview",
     icon: LayoutDashboard,
     end: true,
   },
+
   {
     to: "/admin/users",
     label: "User Management",
@@ -111,6 +112,7 @@ const studentNavLinks = [
 
 export default function DashboardLayout() {
   const { data } = useUserInfoQuery(undefined);
+  console.log(data);
 
   const [logout] = useLogoutMutation();
 
@@ -121,7 +123,7 @@ export default function DashboardLayout() {
 
   const userRole = data?.data?.role;
 
-  const isAdmin = userRole === "admin" || userRole === "superAdmin";
+  const isAdmin = userRole === "ADMIN" || userRole === "SUPER_ADMIN";
 
   const navLinks = isAdmin ? adminNavLinks : studentNavLinks;
 

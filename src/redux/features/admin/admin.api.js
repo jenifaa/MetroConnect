@@ -12,7 +12,7 @@ export const adminApi = baseApi.injectEndpoints({
 
     getAdminUsers: builder.query({
       query: (params) => ({
-        url: "/admin/users",
+        url: "/user/all-users",
         method: "GET",
         params,
       }),

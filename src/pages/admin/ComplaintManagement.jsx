@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {
-  useGetComplaintsQuery,
+  useGetAdminComplaintsQuery,
   useUpdateComplaintStatusMutation,
 } from "@/redux/features/complaint/complaint.api";
 import { LoadingState, EmptyState, ErrorState } from "@/components/common/States";
@@ -12,20 +12,20 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@
 import { ShieldCheck, User, Clock,  Eye, Send } from "lucide-react";
 
 export default function ComplaintManagement() {
-  const { data: complaintsResponse, isLoading, isError, refetch } = useGetComplaintsQuery(undefined);
+  const { data: complaintsResponse, isLoading, isError, refetch } = useGetAdminComplaintsQuery(undefined);
   const [updateComplaintStatus, { isLoading: isUpdating }] = useUpdateComplaintStatusMutation();
 
   const complaints = complaintsResponse?.data || [];
 
   // Focus modal state
   const [activeComplaint, setActiveComplaint] = useState(null);
-  const [statusVal, setStatusVal] = useState("Under Review");
+  const [statusVal, setStatusVal] = useState("Pending");
   const [resolutionText, setResolutionText] = useState("");
 
   const handleOpenDetail = (complaint) => {
     setActiveComplaint(complaint);
-    setStatusVal(complaint.status || "Under Review");
-    setResolutionText(complaint.resolutionDetails || "");
+    setStatusVal(complaint.status || "Pending");
+    setResolutionText(complaint.adminResponse || "");
   };
 
   const handleUpdateStatusSubmit = async (e) => {
@@ -35,7 +35,7 @@ export default function ComplaintManagement() {
       await updateComplaintStatus({
         id: activeComplaint.id || activeComplaint._id,
         status: statusVal,
-        resolutionDetails: resolutionText,
+        adminResponse: resolutionText,
       }).unwrap();
       // toast.success("Complaint resolved and status updated! 🎉");
       setActiveComplaint(null);
@@ -50,7 +50,7 @@ export default function ComplaintManagement() {
     switch (status) {
       case "Resolved":
         return "bg-green-500/10 text-green-700 dark:text-green-400 border-green-200/50";
-      case "Under Review":
+      case "In Progress":
         return "bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-200/50";
       case "Rejected":
         return "bg-red-500/10 text-red-700 dark:text-red-400 border-red-200/50";
@@ -155,7 +155,7 @@ export default function ComplaintManagement() {
                         ) : (
                           <p className="text-foreground font-semibold flex items-center gap-1 text-[11px] mt-0.5">
                             <User className="h-3.5 w-3.5 text-primary" />
-                            {activeComplaint.author?.name || "Student"} ({activeComplaint.author?.email})
+                            {activeComplaint.submittedBy?.name || "Student"} ({activeComplaint.submittedBy?.email})
                           </p>
                         )}
                       </div>
@@ -172,7 +172,7 @@ export default function ComplaintManagement() {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="Pending">Pending (Not Reviewed)</SelectItem>
-                          <SelectItem value="Under Review">Under Review (Investigating)</SelectItem>
+                          <SelectItem value="In Progress">Under Review (Investigating)</SelectItem>
                           <SelectItem value="Resolved">Resolved (Grievance Settled)</SelectItem>
                           <SelectItem value="Rejected">Rejected (Declined)</SelectItem>
                         </SelectContent>

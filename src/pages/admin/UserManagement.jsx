@@ -1,9 +1,6 @@
 import { useState } from "react";
-import {
-  useGetAdminUsersQuery,
-  useUpdateUserStatusMutation,
-} from "@/redux/features/admin/admin.api";
-import { useDeleteUserMutation } from "@/redux/features/auth/auth.api";
+
+import { useDeleteUserMutation, useGetAllUsersQuery } from "@/redux/features/auth/auth.api";
 import { LoadingState, EmptyState, ErrorState } from "@/components/common/States";
 import PageHeader from "@/components/common/PageHeader";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
@@ -11,9 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 // import { toast } from "@/components/ui/toast";
 import {  Trash2, Shield, Lock, Unlock } from "lucide-react";
+import { useUpdateUserStatusMutation } from "@/redux/features/admin/admin.api";
 
 export default function UserManagement() {
-  const { data: usersResponse, isLoading, isError, refetch } = useGetAdminUsersQuery(undefined);
+  const { data: usersResponse, isLoading, isError, refetch } = useGetAllUsersQuery(undefined);
+  console.log(usersResponse)
+
+
+
   const [updateUserStatus] = useUpdateUserStatusMutation();
   const [deleteUser] = useDeleteUserMutation();
 

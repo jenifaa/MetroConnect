@@ -285,10 +285,10 @@ export default function FeedPage() {
                   </div>
 
                   {/* Image attachment if exists */}
-                  {post.image && (
+                  {post.images?.length > 0 && (
                     <div className="relative rounded-2xl overflow-hidden max-h-96 border">
                       <img
-                        src={post.image}
+                        src={post.images[0]}
                         alt="Attachment"
                         className="w-full h-full object-cover"
                       />
@@ -304,7 +304,7 @@ export default function FeedPage() {
                         className="gap-2 rounded-xl h-9 hover:bg-primary/5 hover:text-primary"
                       >
                         <ThumbsUp className="h-4 w-4" />
-                        <span>{post.likes?.length || 0}</span>
+                        <span>{post.reactions?.length || 0}</span>
                       </Button>
 
                       <Link to={`/posts/${post.id || post._id}`}>

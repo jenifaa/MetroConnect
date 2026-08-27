@@ -126,7 +126,7 @@ export default function PostDetailPage() {
     try {
       await likePost({
         id: postRealId,
-        reactionType: "LIKE",
+        reactionType: "like",
       }).unwrap();
     } catch (error) {
       console.error(error);
@@ -143,7 +143,7 @@ export default function PostDetailPage() {
       setIsSubmittingComment(true);
 
       await addComment({
-        id: postRealId,
+        postId: postRealId,
         text: commentText.trim(),
       }).unwrap();
 

@@ -13,7 +13,11 @@ export default function withAuth(Component, requiredRole) {
       return <Navigate to="/login" replace />;
     }
 
-    if (requiredRole && requiredRole !== data?.data?.role) {
+    const roles = Array.isArray(requiredRole)
+      ? requiredRole
+      : [requiredRole];
+
+    if (requiredRole && !roles.includes(data?.data?.role)) {
       return <Navigate to="/unauthorized" replace />;
     }
 

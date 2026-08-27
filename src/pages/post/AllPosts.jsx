@@ -254,13 +254,13 @@ function AllPosts() {
                       </Link>
 
                       {/* Image */}
-                      {post.image && (
+                      {post.images && post.images.length > 0 && (
                         <Link
                           to={`/posts/${postId}`}
                           className="mt-5 block overflow-hidden rounded-xl border"
                         >
                           <img
-                            src={post.image}
+                            src={post.images[0]}
                             alt={post.title}
                             className="max-h-105 w-full object-cover transition-transform duration-300 group-hover:scale-[1.01]"
                           />

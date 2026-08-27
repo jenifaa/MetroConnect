@@ -75,10 +75,10 @@ export const postApi = baseApi.injectEndpoints({
     }),
 
     addComment: builder.mutation({
-      query: ({ id, content }) => ({
-        url: `/posts/${id}/comments`,
+      query: ({ postId, text }) => ({
+        url: `/posts/${postId}/comments`,
         method: "POST",
-        data: { content },
+        data: { text },
       }),
       invalidatesTags: ["POST"],
     }),

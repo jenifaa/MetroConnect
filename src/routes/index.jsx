@@ -17,6 +17,11 @@ import { userSidebarItems } from "./userSidebarItems";
 import AllPosts from "@/pages/post/AllPosts";
 import PostDetailPage from "@/pages/community/PostDetailPage";
 import PostEdit from "@/pages/post/PostEdit";
+import AnnouncementsListPage from "@/pages/announcements/AnnouncementsListPage";
+import AnnouncementDetailPage from "@/pages/announcements/AnnouncementDetailPage";
+import QuestionDetailPage from "@/pages/questions/QuestionDetailPage";
+import LostFoundDetailPage from "@/pages/lostFound/LostFoundDetailPage";
+import ComplaintDetailPage from "@/pages/complaints/ComplaintDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -40,12 +45,32 @@ const router = createBrowserRouter([
         path: "all-posts",
       },
       {
+        Component: AnnouncementsListPage,
+        path: "announcements",
+      },
+      {
+        Component: AnnouncementDetailPage,
+        path: "announcements/:announcementId",
+      },
+      {
+        Component: QuestionDetailPage,
+        path: "questions/:questionId",
+      },
+      {
+        Component: LostFoundDetailPage,
+        path: "lost-found/:itemId",
+      },
+      {
+        Component: ComplaintDetailPage,
+        path: "complaints/:complaintId",
+      },
+      {
         Component: PostDetailPage,
-        path: "posts/:id",
+        path: "posts/:postId",
       },
       {
         Component: PostEdit,
-        path: "posts/:id/edit",
+        path: "posts/:postId/edit",
       },
     ],
   },
@@ -58,10 +83,7 @@ const router = createBrowserRouter([
     path: "/login",
   },
   {
-    Component: withAuth(
-      DashboardLayout,
-      (role.superAdmin ) || (role.admin ),
-    ),
+    Component: withAuth(DashboardLayout, [role.superAdmin, role.admin]),
     path: "/admin",
 
     children: [

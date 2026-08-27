@@ -39,7 +39,7 @@ const CATEGORIES = [
 ];
 
 function PostEdit() {
-  const { id } = useParams();
+  const { postId } = useParams();
   const navigate = useNavigate();
 
   const {
@@ -47,7 +47,7 @@ function PostEdit() {
     isLoading,
     isError,
     refetch,
-  } = useGetPostByIdQuery(id);
+  } = useGetPostByIdQuery(postId);
 
   const [updatePost, { isLoading: isUpdating }] = useUpdatePostMutation();
 
@@ -114,11 +114,11 @@ function PostEdit() {
 
     try {
       await updatePost({
-        id,
+        id: postId,
         data: formData,
       }).unwrap();
 
-      navigate(`/posts/${id}`);
+      navigate(`/posts/${postId}`);
     } catch (error) {
       console.error("Failed to update post:", error);
     }
@@ -337,7 +337,7 @@ function PostEdit() {
 
             {/* Actions */}
             <div className="flex flex-col-reverse gap-3 border-t pt-6 sm:flex-row sm:justify-end">
-              <Link to={`/posts/${id}`}>
+              <Link to={`/posts/${postId}`}>
                 <Button
                   type="button"
                   variant="outline"
