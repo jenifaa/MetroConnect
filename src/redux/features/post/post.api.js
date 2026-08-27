@@ -18,6 +18,15 @@ export const postApi = baseApi.injectEndpoints({
       }),
       providesTags: ["POST"],
     }),
+    getMyPosts: builder.query({
+      query: (params) => ({
+        url: "/posts/my-posts",
+        method: "GET",
+        params,
+      }),
+
+      providesTags: ["POST"],
+    }),
 
     createPost: builder.mutation({
       query: (data) => ({
@@ -29,7 +38,7 @@ export const postApi = baseApi.injectEndpoints({
     }),
 
     updatePost: builder.mutation({
-      query: ({ id, ...data }) => ({
+      query: ({ id, data }) => ({
         url: `/posts/${id}`,
         method: "PATCH",
         data,
@@ -94,4 +103,5 @@ export const {
   useReportPostMutation,
   useAddCommentMutation,
   useDeleteCommentMutation,
+  useGetMyPostsQuery,
 } = postApi;

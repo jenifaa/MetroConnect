@@ -7,6 +7,7 @@ import QuestionFormPage from "@/pages/questions/QuestionFormPage";
 import Announcement from "@/pages/student/Announcement";
 import Events from "@/pages/student/Events";
 import MyComplains from "@/pages/student/MyComplains";
+import MyPosts from "@/pages/student/MyPosts";
 import NotificationsPage from "@/pages/student/NotificationsPage";
 import ProfilePage from "@/pages/student/ProfilePage";
 import Settings from "@/pages/student/Settings";
@@ -82,8 +83,8 @@ export const userSidebarItems = [
     items: [
       {
         title: "Posts",
-        url: "/user/posts",
-        // component: Posts,
+        url: "/user/posts/my-posts",
+        component: MyPosts,
       },
     ],
   },

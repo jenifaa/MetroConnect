@@ -78,7 +78,7 @@ const studentNavLinks = [
     icon: User,
   },
   {
-    to: "/user/posts",
+    to: "/user/posts/my-posts",
     label: "My Posts",
     icon: FileText,
   },
