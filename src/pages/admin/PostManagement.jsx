@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import { toast } from "sonner";
+
 import {
   Eye,
   Trash2,
@@ -61,13 +61,11 @@ function PostManagement() {
 
       await deletePost(postId).unwrap();
 
-      toast.success("Post deleted successfully");
+   
 
       refetch();
     } catch (error) {
-      toast.error(
-        error?.data?.message || "Failed to delete the post"
-      );
+    console.log(error)
     } finally {
       setDeletingPostId(null);
     }
@@ -83,7 +81,7 @@ function PostManagement() {
           </p>
         </div>
 
-        <div className="flex min-h-[300px] items-center justify-center">
+        <div className="flex min-h-75 items-center justify-center">
           <p className="text-muted-foreground">
             Loading posts...
           </p>
@@ -103,7 +101,7 @@ function PostManagement() {
         </div>
 
         <Card>
-          <CardContent className="flex min-h-[250px] flex-col items-center justify-center gap-4">
+          <CardContent className="flex min-h-62.5 flex-col items-center justify-center gap-4">
             <p className="text-destructive">
               Failed to load posts.
             </p>
@@ -141,7 +139,7 @@ function PostManagement() {
       {/* Posts */}
       {posts.length === 0 ? (
         <Card>
-          <CardContent className="flex min-h-[300px] flex-col items-center justify-center text-center">
+          <CardContent className="flex min-h-75 flex-col items-center justify-center text-center">
             <ImageIcon className="mb-4 h-10 w-10 text-muted-foreground" />
 
             <h2 className="text-lg font-semibold">
@@ -246,7 +244,7 @@ function PostManagement() {
                       <img
                         src={image}
                         alt="Post attachment"
-                        className="max-h-[400px] w-full object-cover"
+                        className="max-h-100 w-full object-cover"
                       />
                     </div>
                   )}

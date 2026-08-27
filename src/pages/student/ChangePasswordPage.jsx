@@ -58,7 +58,7 @@ export default function ChangePasswordPage() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-md space-y-6 mt-14">
       <div>
-        <Button onClick={() => navigate("/profile")} variant="ghost" className="rounded-xl gap-2 text-muted-foreground">
+        <Button onClick={() => navigate("/user/profile")} variant="ghost" className="rounded-xl gap-2 text-muted-foreground">
           <ArrowLeft className="h-4 w-4" />
           Back to Profile
         </Button>

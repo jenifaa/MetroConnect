@@ -23,6 +23,8 @@ import QuestionDetailPage from "@/pages/questions/QuestionDetailPage";
 import LostFoundDetailPage from "@/pages/lostFound/LostFoundDetailPage";
 import ComplaintDetailPage from "@/pages/complaints/ComplaintDetailPage";
 
+import ChangePasswordPage from "@/pages/student/ChangePasswordPage";
+
 const router = createBrowserRouter([
   {
     Component: App,
@@ -71,6 +73,10 @@ const router = createBrowserRouter([
       {
         Component: PostEdit,
         path: "posts/:postId/edit",
+      },
+      {
+        Component: ChangePasswordPage,
+        path: "change-password",
       },
     ],
   },

@@ -1,8 +1,8 @@
 import { Bell, Check, Clock, Eye } from "lucide-react";
 import {
   useGetNotificationsQuery,
-  useMarkNotificationReadMutation,
-  useMarkAllNotificationsReadMutation,
+
+  // useMarkAllNotificationsReadMutation,
 } from "@/redux/features/notification/notification.api";
 import { LoadingState, EmptyState, ErrorState } from "@/components/common/States";
 import { Button } from "@/components/ui/button";
@@ -11,33 +11,24 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export default function NotificationsPage() {
   const { data: notificationsResponse, isLoading, isError, refetch } = useGetNotificationsQuery(undefined);
-  const [markRead] = useMarkNotificationReadMutation();
-  const [markAllRead] = useMarkAllNotificationsReadMutation();
+
+  // const [markAllRead] = useMarkAllNotificationsReadMutation();
 
   const notifications = notificationsResponse?.data || [];
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
-  const handleMarkRead = async (id) => {
-    try {
-      await markRead(id).unwrap();
-      // toast.success("Notification marked as read");
-      console.log("Notification marked as read");
-    } catch (err) {
-      // toast.error(err?.data?.message || "Failed to update notification");
-      console.log(err);
-    }
-  };
+  
 
-  const handleMarkAllRead = async () => {
-    try {
-      await markAllRead(undefined).unwrap();
-      // toast.success("All notifications marked as read! 🎉");
-      console.log("All notifications marked as read! 🎉");
-    } catch (err) {
-      // toast.error(err?.data?.message || "Failed to update notifications");
-      console.log(err);
-    }
-  };
+  // const handleMarkAllRead = async () => {
+  //   try {
+  //     await markAllRead(undefined).unwrap();
+     
+  //     console.log("All notifications marked as read! 🎉");
+  //   } catch (err) {
+    
+  //     console.log(err);
+  //   }
+  // };
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-3xl space-y-6 mt-14">
@@ -55,7 +46,7 @@ export default function NotificationsPage() {
 
         {unreadCount > 0 && (
           <Button
-            onClick={handleMarkAllRead}
+            // onClick={handleMarkAllRead}
             variant="outline"
             className="rounded-xl text-xs gap-1 h-9 font-semibold"
           >
@@ -106,7 +97,7 @@ export default function NotificationsPage() {
 
                 {!item.isRead && (
                   <Button
-                    onClick={() => handleMarkRead(item.id || item._id)}
+                   
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8 rounded-lg text-primary hover:bg-primary/10 hover:text-primary shrink-0 self-center"

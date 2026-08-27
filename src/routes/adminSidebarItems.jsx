@@ -1,6 +1,8 @@
 
 
+import Announcement from "@/pages/admin/Announcement";
 import ComplaintManagement from "@/pages/admin/ComplaintManagement";
+import PostManagement from "@/pages/admin/PostManagement";
 import UserManagement from "@/pages/admin/UserManagement";
 
 import { Analytics } from "@/utils/Analytics";
@@ -38,6 +40,16 @@ export const adminSidebarItems = [
         title: "Complain Management",
         url: "/admin/complaints",
         component: ComplaintManagement,
+      },
+      {
+        title: "Announcement Management",
+        url: "/admin/announcements",
+        component: Announcement,
+      },
+      {
+        title: "Post Management",
+        url: "/admin/posts",
+        component: PostManagement,
       },
      
   
