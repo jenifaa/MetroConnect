@@ -2,6 +2,7 @@
 import ComplaintFormPage from "@/pages/complaints/ComplaintFormPage";
 import LostFoundFormPage from "@/pages/lostFound/LostFoundFormPage";
 import CreatePost from "@/pages/post/CreatePost";
+
 import QuestionFormPage from "@/pages/questions/QuestionFormPage";
 import Announcement from "@/pages/student/Announcement";
 import Events from "@/pages/student/Events";
@@ -72,7 +73,8 @@ export const userSidebarItems = [
         title:"Settings",
         url:"/user/settings",
         component: Settings
-      }
+      },
+     
     ],
   },
   {

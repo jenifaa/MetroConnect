@@ -16,6 +16,7 @@ import { adminSidebarItems } from "./adminSidebarItems";
 import { userSidebarItems } from "./userSidebarItems";
 import AllPosts from "@/pages/post/AllPosts";
 import PostDetailPage from "@/pages/community/PostDetailPage";
+import PostEdit from "@/pages/post/PostEdit";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         Component: PostDetailPage,
         path: "posts/:id",
+      },
+      {
+        Component: PostEdit,
+        path: "posts/:id/edit",
       },
     ],
   },
