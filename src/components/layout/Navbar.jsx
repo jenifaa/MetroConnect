@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 
 import { Button } from "../ui/button";
 
@@ -42,7 +42,7 @@ export default function Navbar() {
   const { data } = useUserInfoQuery(undefined);
   const [logout] = useLogoutMutation();
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+
 
   const userRole = data?.data?.role;
 
@@ -70,20 +70,18 @@ export default function Navbar() {
             <img
               src={logo}
               alt="Logo"
-              className="h-full w-full object-contain"
+              className="h-10 w-10 object-contain"
             />
           </Link>
 
           <div>
-            <h1 className="text-base font-semibold tracking-tight">
-              Wallet
+            <h1 className="text-black font-semibold tracking-tight">
+              Metro
               <span className="bg-linear-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent font-extrabold tracking-tight">
-                IQ
+                Connect
               </span>{" "}
             </h1>
-            <p className="text-xs text-muted-foreground -mt-0.5">
-              Modern Experience
-            </p>
+           
           </div>
         </div>
 
@@ -95,7 +93,7 @@ export default function Navbar() {
               <Link
                 key={index}
                 to={link.to}
-                className=" rounded-lg px-4 py-2 text-sm font-medium  transition-all  duration-200 hover:bg-muted hover:text-foreground"
+                className="rounded-lg px-4 py-2 text-sm font-medium text-black transition-all duration-200 hover:bg-muted hover:text-black dark:text-black dark:hover:text-black"
               >
                 {link.label}
               </Link>

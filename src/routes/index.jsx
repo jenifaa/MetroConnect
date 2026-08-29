@@ -25,6 +25,7 @@ import ComplaintDetailPage from "@/pages/complaints/ComplaintDetailPage";
 
 import ChangePasswordPage from "@/pages/student/ChangePasswordPage";
 import MyProfile from "@/pages/CommonPages/MyProfile";
+import EditProfile from "@/pages/CommonPages/EditProfile";
 
 const router = createBrowserRouter([
   {
@@ -82,6 +83,10 @@ const router = createBrowserRouter([
       {
         Component: MyProfile,
         path: "profile",
+      },
+      {
+        Component: EditProfile,
+        path: "profile/edit",
       },
     ],
   },

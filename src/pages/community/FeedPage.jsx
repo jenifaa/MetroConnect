@@ -37,13 +37,13 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const CATEGORIES = [
   "All",
-  "General",
-  "Academic",
-  "Discussion",
-  "Announcement",
-  "Campus",
-  "Help",
-  "Other",
+  "GENERAL",
+  "ACADEMIC",
+  "DISCUSSION",
+  "ANNOUNCEMENT",
+  "CAMPUS",
+  "HELP",
+  "OTHER",
 ];
 
 export default function FeedPage() {
