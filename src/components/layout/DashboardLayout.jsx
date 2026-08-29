@@ -193,7 +193,13 @@ export default function DashboardLayout() {
             {/* Logo */}
             <div className="flex items-center justify-between mb-8">
               <div className="flex items-center gap-2">
-                <img src={logo} alt="Logo" className="h-8 w-8 object-contain" />
+                <Link to="/">
+                  <img
+                    src={logo}
+                    alt="Logo"
+                    className="h-8 w-8 object-contain"
+                  />
+                </Link>
 
                 <span className="font-bold text-sm tracking-tight">
                   Metro

@@ -59,24 +59,29 @@ export default function FeedPage() {
   // API
   // =========================================================
 
-  const { data: userResponse } = useUserInfoQuery(undefined);
+  const { data: userResponse, isLoading: isUserLoading } =
+    useUserInfoQuery(undefined);
 
+  const currentUser = userResponse?.data || null;
   const {
     data: postsResponse,
     isLoading,
     isError,
     refetch,
-  } = useGetPostsQuery({
-    search: searchParams.get("search") || undefined,
-    category:
-      activeCategory === "All" ? undefined : activeCategory,
-  });
+  } = useGetPostsQuery(
+    {
+      search: searchParams.get("search") || undefined,
+      category: activeCategory === "All" ? undefined : activeCategory,
+    },
+    {
+      skip: isUserLoading || !currentUser,
+    },
+  );
 
   const [likePost] = useLikePostMutation();
   const [deletePost] = useDeletePostMutation();
   const [reportPost] = useReportPostMutation();
 
-  const currentUser = userResponse?.data || {};
   const posts = postsResponse?.data || [];
 
   // =========================================================
@@ -178,7 +183,6 @@ export default function FeedPage() {
     <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="space-y-8">
-
           {/* =====================================================
               HEADER
           ====================================================== */}
@@ -206,8 +210,8 @@ export default function FeedPage() {
                   </div>
 
                   <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-                    Share ideas, ask questions, check updates, and
-                    connect with Metropolitan University students.
+                    Share ideas, ask questions, check updates, and connect with
+                    Metropolitan University students.
                   </p>
                 </div>
               </div>
@@ -230,19 +234,13 @@ export default function FeedPage() {
 
           <section className="rounded-2xl border bg-card p-4 shadow-sm">
             <div className="flex flex-col gap-4">
-              
               {/* Search */}
-              <form
-                onSubmit={handleSearchSubmit}
-                className="relative w-full"
-              >
+              <form onSubmit={handleSearchSubmit} className="relative w-full">
                 <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 
                 <Input
                   value={searchQuery}
-                  onChange={(e) =>
-                    setSearchQuery(e.target.value)
-                  }
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search discussions, questions, announcements..."
                   className="h-11 rounded-xl border-muted bg-muted/30 pl-11 pr-4 focus-visible:bg-background"
                 />
@@ -253,14 +251,8 @@ export default function FeedPage() {
                 {CATEGORIES.map((cat) => (
                   <Button
                     key={cat}
-                    onClick={() =>
-                      handleCategorySelect(cat)
-                    }
-                    variant={
-                      activeCategory === cat
-                        ? "default"
-                        : "outline"
-                    }
+                    onClick={() => handleCategorySelect(cat)}
+                    variant={activeCategory === cat ? "default" : "outline"}
                     className={`h-9 shrink-0 rounded-full px-4 text-xs font-medium transition-all ${
                       activeCategory === cat
                         ? "shadow-sm"
@@ -291,8 +283,7 @@ export default function FeedPage() {
               </div>
 
               <div className="hidden rounded-full border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground sm:block">
-                {posts.length}{" "}
-                {posts.length === 1 ? "post" : "posts"}
+                {posts.length} {posts.length === 1 ? "post" : "posts"}
               </div>
             </div>
           )}
@@ -301,11 +292,19 @@ export default function FeedPage() {
               STATES
           ====================================================== */}
 
-          {isLoading ? (
-            <LoadingState
-              message="Loading discussions..."
-              items={4}
-            />
+          {isUserLoading ? (
+            <LoadingState message="Checking authentication..." items={1} />
+          ) : !currentUser ? (
+            <EmptyState
+              title="Please log in first"
+              description="You need to log in to view and participate in campus discussions."
+            >
+              <Link to="/login">
+                <Button className="rounded-xl">Log In</Button>
+              </Link>
+            </EmptyState>
+          ) : isLoading ? (
+            <LoadingState message="Loading discussions..." items={4} />
           ) : isError ? (
             <ErrorState onRetry={refetch} />
           ) : posts.length === 0 ? (
@@ -318,9 +317,7 @@ export default function FeedPage() {
               }
             >
               <Link to="/user/posts/new">
-                <Button className="rounded-xl">
-                  Create a Post
-                </Button>
+                <Button className="rounded-xl">Create a Post</Button>
               </Link>
             </EmptyState>
           ) : (
@@ -344,7 +341,6 @@ export default function FeedPage() {
                     className="group overflow-hidden rounded-3xl border-muted/80 bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-lg"
                   >
                     <CardContent className="p-0">
-
                       {/* =================================================
                           IMAGE
                       ================================================== */}
@@ -369,7 +365,6 @@ export default function FeedPage() {
                       )}
 
                       <div className="p-5 sm:p-6">
-
                         {/* =============================================
                             AUTHOR HEADER
                         ============================================== */}
@@ -387,8 +382,7 @@ export default function FeedPage() {
 
                             <div className="min-w-0">
                               <p className="truncate text-sm font-semibold">
-                                {post.author?.name ||
-                                  "MU Student"}
+                                {post.author?.name || "MU Student"}
                               </p>
 
                               <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[11px] text-muted-foreground">
@@ -425,9 +419,7 @@ export default function FeedPage() {
 
                         {isOwner && (
                           <div className="mt-4 flex items-center justify-end gap-1 border-b pb-3">
-                            <Link
-                              to={`/posts/${postId}/edit`}
-                            >
+                            <Link to={`/posts/${postId}/edit`}>
                               <Button
                                 variant="ghost"
                                 size="sm"
@@ -439,9 +431,7 @@ export default function FeedPage() {
                             </Link>
 
                             <Button
-                              onClick={() =>
-                                setPostToDelete(postId)
-                              }
+                              onClick={() => setPostToDelete(postId)}
                               variant="ghost"
                               size="sm"
                               className="h-8 rounded-lg px-2.5 text-xs text-red-500 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/20"
@@ -468,8 +458,7 @@ export default function FeedPage() {
                           </Link>
 
                           <p className="mt-3 line-clamp-3 text-sm leading-6 text-muted-foreground">
-                            {post.description ||
-                              post.content}
+                            {post.description || post.content}
                           </p>
                         </div>
 
@@ -479,27 +468,21 @@ export default function FeedPage() {
 
                         <div className="mt-6 flex items-center justify-between border-t pt-4">
                           <div className="flex items-center gap-1">
-
                             {/* Like */}
                             <Button
-                              onClick={() =>
-                                handleLike(postId)
-                              }
+                              onClick={() => handleLike(postId)}
                               variant="ghost"
                               className="h-9 gap-2 rounded-xl px-3 text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary"
                             >
                               <ThumbsUp className="h-4 w-4" />
 
                               <span className="text-xs font-semibold">
-                                {post.reactions?.length ||
-                                  0}
+                                {post.reactions?.length || 0}
                               </span>
                             </Button>
 
                             {/* Comments */}
-                            <Link
-                              to={`/posts/${postId}`}
-                            >
+                            <Link to={`/posts/${postId}`}>
                               <Button
                                 variant="ghost"
                                 className="h-9 gap-2 rounded-xl px-3 text-muted-foreground transition-colors hover:bg-blue-500/10 hover:text-blue-500"
@@ -507,8 +490,7 @@ export default function FeedPage() {
                                 <MessageSquare className="h-4 w-4" />
 
                                 <span className="text-xs font-semibold">
-                                  {post.comments?.length ||
-                                    0}
+                                  {post.comments?.length || 0}
                                 </span>
                               </Button>
                             </Link>
@@ -517,21 +499,16 @@ export default function FeedPage() {
                           {/* Report */}
                           {!isOwner && (
                             <Button
-                              onClick={() =>
-                                setPostToReport(postId)
-                              }
+                              onClick={() => setPostToReport(postId)}
                               variant="ghost"
                               className="h-9 gap-2 rounded-xl px-3 text-xs text-muted-foreground hover:bg-red-500/10 hover:text-red-500"
                             >
                               <AlertTriangle className="h-4 w-4" />
 
-                              <span className="hidden sm:inline">
-                                Report
-                              </span>
+                              <span className="hidden sm:inline">Report</span>
                             </Button>
                           )}
                         </div>
-
                       </div>
                     </CardContent>
                   </Card>
@@ -566,7 +543,6 @@ export default function FeedPage() {
             onConfirm={handleReportConfirm}
             onClose={() => setPostToReport(null)}
           />
-
         </div>
       </div>
     </div>

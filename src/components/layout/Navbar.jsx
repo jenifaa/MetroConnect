@@ -52,7 +52,7 @@ export default function Navbar() {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
       dispatch(authApi.util.resetApiState());
-      navigate("/login");
+      // navigate("/login");
     } catch (error) {
       console.log("Logout failed:", error);
     }
@@ -88,14 +88,14 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-1 lg:flex">
+        <nav className="hidden items-center gap-1 lg:flex ">
           {navLinks
             .filter((link) => link.role === "PUBLIC" || link.role === userRole)
             .map((link, index) => (
               <Link
                 key={index}
                 to={link.to}
-                className="rounded-lg px-4 py-2 text-sm font-medium  transition-all duration-200 hover:bg-muted hover:text-foreground"
+                className=" rounded-lg px-4 py-2 text-sm font-medium  transition-all  duration-200 hover:bg-muted hover:text-foreground"
               >
                 {link.label}
               </Link>
