@@ -24,6 +24,7 @@ import LostFoundDetailPage from "@/pages/lostFound/LostFoundDetailPage";
 import ComplaintDetailPage from "@/pages/complaints/ComplaintDetailPage";
 
 import ChangePasswordPage from "@/pages/student/ChangePasswordPage";
+import MyProfile from "@/pages/CommonPages/MyProfile";
 
 const router = createBrowserRouter([
   {
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
       {
         Component: ChangePasswordPage,
         path: "change-password",
+      },
+      {
+        Component: MyProfile,
+        path: "profile",
       },
     ],
   },

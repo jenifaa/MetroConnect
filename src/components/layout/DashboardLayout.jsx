@@ -112,7 +112,7 @@ const studentNavLinks = [
 
 export default function DashboardLayout() {
   const { data } = useUserInfoQuery(undefined);
-  console.log(data);
+  // console.log(data);
 
   const [logout] = useLogoutMutation();
 

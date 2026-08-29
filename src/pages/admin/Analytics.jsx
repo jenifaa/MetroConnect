@@ -1,12 +1,13 @@
+
 import {
   Activity,
-  ArrowDownRight,
+
   ArrowUpRight,
   BarChart3,
   CalendarDays,
   Download,
   MoreHorizontal,
-  TrendingUp,
+ 
   Users,
   UserPlus,
   FileText,
@@ -32,83 +33,134 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { useGetAllUsersQuery } from "@/redux/features/auth/auth.api";
+import { useGetPostsQuery } from "@/redux/features/post/post.api";
+
 function Analytics() {
+  // =========================================================
+  // API
+  // =========================================================
+
+  const {
+    data: usersResponse,
+    isLoading: usersLoading,
+  } = useGetAllUsersQuery(undefined);
+
+  const {
+    data: postsResponse,
+    isLoading: postsLoading,
+  } = useGetPostsQuery(undefined);
+
+  // =========================================================
+  // META DATA
+  // =========================================================
+
+  const totalUsers = usersResponse?.meta?.total ?? 0;
+  const totalPosts = postsResponse?.meta?.total ?? 0;
+
+  // If your backend uses meta.totalDocs instead of meta.total,
+  // change the above to:
+  //
+  // const totalUsers = usersResponse?.meta?.totalDocs ?? 0;
+  // const totalPosts = postsResponse?.meta?.totalDocs ?? 0;
+
+  const users = usersResponse?.data ?? [];
+  const posts = postsResponse?.data ?? [];
+
+  // =========================================================
+  // CALCULATED DATA
+  // =========================================================
+
+  const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+
+  const newUsersThisMonth = users.filter((user) => {
+    if (!user.createdAt) return false;
+
+    const date = new Date(user.createdAt);
+
+    return (
+      date.getMonth() === currentMonth &&
+      date.getFullYear() === currentYear
+    );
+  }).length;
+
+  const totalComments = posts.reduce(
+    (total, post) => total + (post.comments?.length || 0),
+    0,
+  );
+
+  const totalReactions = posts.reduce(
+    (total, post) => total + (post.reactions?.length || 0),
+    0,
+  );
+
+  // =========================================================
+  // STATS
+  // =========================================================
+
   const stats = [
     {
       title: "Total Users",
-      value: "12,480",
-      change: "+12.5%",
+      value: usersLoading ? "..." : totalUsers.toLocaleString(),
+      change: "Current",
       trend: "up",
       icon: Users,
-      description: "vs. last month",
+      description: "registered users",
     },
     {
       title: "New Users",
-      value: "1,284",
-      change: "+18.2%",
+      value: usersLoading ? "..." : newUsersThisMonth.toLocaleString(),
+      change: "This month",
       trend: "up",
       icon: UserPlus,
-      description: "vs. last month",
+      description: "new registrations",
     },
     {
       title: "Total Posts",
-      value: "8,642",
-      change: "+8.4%",
+      value: postsLoading ? "..." : totalPosts.toLocaleString(),
+      change: "Current",
       trend: "up",
       icon: FileText,
-      description: "vs. last month",
+      description: "community posts",
     },
     {
-      title: "Engagement Rate",
-      value: "74.8%",
-      change: "-2.1%",
-      trend: "down",
+      title: "Engagement",
+      value: postsLoading ? "..." : totalReactions.toLocaleString(),
+      change: "Total",
+      trend: "up",
       icon: Activity,
-      description: "vs. last month",
+      description: "post reactions",
     },
   ];
 
-  const activities = [
+  // =========================================================
+  // CONTENT DATA
+  // =========================================================
+
+  const contentStats = [
     {
-      user: "Sarah Ahmed",
-      action: "Created a new post",
-      category: "Community",
-      time: "2 min ago",
-      status: "Completed",
+      label: "Posts",
+      value: totalPosts,
     },
     {
-      user: "Tanvir Hasan",
-      action: "Reported an issue",
-      category: "Complaint",
-      time: "15 min ago",
-      status: "Pending",
+      label: "Comments",
+      value: totalComments,
     },
     {
-      user: "Nusrat Jahan",
-      action: "Commented on a post",
-      category: "Engagement",
-      time: "32 min ago",
-      status: "Completed",
-    },
-    {
-      user: "Rakibul Islam",
-      action: "Created an event",
-      category: "Events",
-      time: "1 hour ago",
-      status: "Completed",
-    },
-    {
-      user: "Fahim Rahman",
-      action: "Submitted feedback",
-      category: "Feedback",
-      time: "2 hours ago",
-      status: "Pending",
+      label: "Reactions",
+      value: totalReactions,
     },
   ];
+
+  // =========================================================
+  // MAIN UI
+  // =========================================================
 
   return (
     <div className="min-h-screen bg-muted/30 p-4 md:p-6 lg:p-8">
       <div className="mx-auto max-w-7xl space-y-6">
+
         {/* Header */}
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
@@ -173,19 +225,8 @@ function Analytics() {
                   </div>
 
                   <div className="mt-4 flex items-center gap-2 text-xs">
-                    <span
-                      className={`flex items-center gap-1 font-medium ${
-                        stat.trend === "up"
-                          ? "text-emerald-600"
-                          : "text-red-600"
-                      }`}
-                    >
-                      {stat.trend === "up" ? (
-                        <ArrowUpRight className="h-3.5 w-3.5" />
-                      ) : (
-                        <ArrowDownRight className="h-3.5 w-3.5" />
-                      )}
-
+                    <span className="flex items-center gap-1 font-medium text-emerald-600">
+                      <ArrowUpRight className="h-3.5 w-3.5" />
                       {stat.change}
                     </span>
 
@@ -201,13 +242,15 @@ function Analytics() {
 
         {/* Main Analytics */}
         <div className="grid gap-6 lg:grid-cols-3">
-          {/* User Growth */}
+
+          {/* User / Post Overview */}
           <Card className="lg:col-span-2 shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between">
               <div>
-                <CardTitle>User Growth</CardTitle>
+                <CardTitle>Platform Overview</CardTitle>
+
                 <p className="mt-1 text-sm text-muted-foreground">
-                  New users registered over the selected period
+                  Current users and community content statistics
                 </p>
               </div>
 
@@ -217,44 +260,102 @@ function Analytics() {
             </CardHeader>
 
             <CardContent>
-              <div className="mb-6 flex items-end gap-3">
-                <span className="text-3xl font-bold">12,480</span>
-                <span className="mb-1 flex items-center text-sm font-medium text-emerald-600">
-                  <TrendingUp className="mr-1 h-4 w-4" />
-                  12.5%
-                </span>
+              <div className="grid gap-4 sm:grid-cols-3">
+
+                {/* Users */}
+                <div className="rounded-2xl border bg-background p-5">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">
+                      Total Users
+                    </p>
+
+                    <Users className="h-5 w-5 text-primary" />
+                  </div>
+
+                  <p className="mt-3 text-3xl font-bold">
+                    {usersLoading
+                      ? "..."
+                      : totalUsers.toLocaleString()}
+                  </p>
+
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Registered users
+                  </p>
+                </div>
+
+                {/* Posts */}
+                <div className="rounded-2xl border bg-background p-5">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">
+                      Total Posts
+                    </p>
+
+                    <FileText className="h-5 w-5 text-primary" />
+                  </div>
+
+                  <p className="mt-3 text-3xl font-bold">
+                    {postsLoading
+                      ? "..."
+                      : totalPosts.toLocaleString()}
+                  </p>
+
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Community posts
+                  </p>
+                </div>
+
+                {/* Comments */}
+                <div className="rounded-2xl border bg-background p-5">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">
+                      Comments
+                    </p>
+
+                    <MessageSquare className="h-5 w-5 text-primary" />
+                  </div>
+
+                  <p className="mt-3 text-3xl font-bold">
+                    {postsLoading
+                      ? "..."
+                      : totalComments.toLocaleString()}
+                  </p>
+
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Total comments
+                  </p>
+                </div>
               </div>
 
-              {/* Chart */}
-              <div className="flex h-70 items-end gap-2 border-b border-l px-2 pb-0">
-                {[42, 55, 48, 65, 58, 72, 68, 82, 76, 88, 80, 96].map(
-                  (height, index) => (
-                    <div
-                      key={index}
-                      className="group relative flex h-full flex-1 items-end"
-                    >
-                      <div
-                        className="w-full rounded-t-md bg-primary/80 transition-all duration-300 group-hover:bg-primary"
-                        style={{ height: `${height}%` }}
-                      />
+              {/* User Growth */}
+              <div className="mt-8">
+                <div className="mb-4 flex items-center justify-between">
+                  <div>
+                    <h3 className="font-semibold">
+                      User Statistics
+                    </h3>
 
-                      <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] text-muted-foreground">
-                        {index + 1}
-                      </span>
-                    </div>
-                  )
-                )}
-              </div>
+                    <p className="text-sm text-muted-foreground">
+                      Current platform user activity
+                    </p>
+                  </div>
 
-              <div className="mt-8 flex justify-between text-xs text-muted-foreground">
-                <span>Jan</span>
-                <span>Feb</span>
-                <span>Mar</span>
-                <span>Apr</span>
-                <span>May</span>
-                <span>Jun</span>
-                <span>Jul</span>
-                <span>Aug</span>
+                  <span className="text-2xl font-bold">
+                    {totalUsers.toLocaleString()}
+                  </span>
+                </div>
+
+                <Progress
+                  value={totalUsers > 0 ? 100 : 0}
+                  className="h-3"
+                />
+
+                <div className="mt-2 flex justify-between text-xs text-muted-foreground">
+                  <span>Registered Users</span>
+
+                  <span>
+                    {newUsersThisMonth.toLocaleString()} new this month
+                  </span>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -263,42 +364,74 @@ function Analytics() {
           <Card className="shadow-sm">
             <CardHeader>
               <CardTitle>Engagement</CardTitle>
+
               <p className="text-sm text-muted-foreground">
                 Platform activity breakdown
               </p>
             </CardHeader>
 
             <CardContent className="space-y-6">
+
               <div>
                 <div className="mb-2 flex justify-between text-sm">
-                  <span className="font-medium">Posts</span>
-                  <span className="text-muted-foreground">82%</span>
+                  <span className="font-medium">
+                    Posts
+                  </span>
+
+                  <span className="text-muted-foreground">
+                    {totalPosts.toLocaleString()}
+                  </span>
                 </div>
-                <Progress value={82} />
+
+                <Progress
+                  value={totalPosts > 0 ? 100 : 0}
+                />
               </div>
 
               <div>
                 <div className="mb-2 flex justify-between text-sm">
-                  <span className="font-medium">Comments</span>
-                  <span className="text-muted-foreground">68%</span>
+                  <span className="font-medium">
+                    Comments
+                  </span>
+
+                  <span className="text-muted-foreground">
+                    {totalComments.toLocaleString()}
+                  </span>
                 </div>
-                <Progress value={68} />
+
+                <Progress
+                  value={
+                    totalPosts > 0
+                      ? Math.min(
+                          (totalComments / totalPosts) * 20,
+                          100,
+                        )
+                      : 0
+                  }
+                />
               </div>
 
               <div>
                 <div className="mb-2 flex justify-between text-sm">
-                  <span className="font-medium">Events</span>
-                  <span className="text-muted-foreground">54%</span>
-                </div>
-                <Progress value={54} />
-              </div>
+                  <span className="font-medium">
+                    Reactions
+                  </span>
 
-              <div>
-                <div className="mb-2 flex justify-between text-sm">
-                  <span className="font-medium">Feedback</span>
-                  <span className="text-muted-foreground">41%</span>
+                  <span className="text-muted-foreground">
+                    {totalReactions.toLocaleString()}
+                  </span>
                 </div>
-                <Progress value={41} />
+
+                <Progress
+                  value={
+                    totalPosts > 0
+                      ? Math.min(
+                          (totalReactions / totalPosts) * 20,
+                          100,
+                        )
+                      : 0
+                  }
+                />
               </div>
 
               <div className="rounded-xl bg-muted/70 p-4">
@@ -308,9 +441,15 @@ function Analytics() {
                   </div>
 
                   <div>
-                    <p className="text-sm font-medium">Active Community</p>
+                    <p className="text-sm font-medium">
+                      Community Activity
+                    </p>
+
                     <p className="text-xs text-muted-foreground">
-                      6,842 active members
+                      {(
+                        totalComments + totalReactions
+                      ).toLocaleString()}{" "}
+                      interactions
                     </p>
                   </div>
                 </div>
@@ -319,138 +458,212 @@ function Analytics() {
           </Card>
         </div>
 
-        {/* Secondary Analytics */}
+        {/* Content Analytics */}
         <div className="grid gap-6 md:grid-cols-2">
-          {/* Content Analytics */}
+
           <Card className="shadow-sm">
             <CardHeader>
               <CardTitle>Content Overview</CardTitle>
+
               <p className="text-sm text-muted-foreground">
                 Current platform content statistics
               </p>
             </CardHeader>
 
             <CardContent className="grid grid-cols-2 gap-4">
-              <div className="rounded-xl border bg-background p-4">
-                <p className="text-sm text-muted-foreground">Posts</p>
-                <p className="mt-2 text-2xl font-bold">8,642</p>
-                <p className="mt-1 text-xs text-emerald-600">+8.4%</p>
-              </div>
+              {contentStats.map((item) => (
+                <div
+                  key={item.label}
+                  className="rounded-xl border bg-background p-4"
+                >
+                  <p className="text-sm text-muted-foreground">
+                    {item.label}
+                  </p>
+
+                  <p className="mt-2 text-2xl font-bold">
+                    {item.value.toLocaleString()}
+                  </p>
+
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Current total
+                  </p>
+                </div>
+              ))}
 
               <div className="rounded-xl border bg-background p-4">
-                <p className="text-sm text-muted-foreground">Comments</p>
-                <p className="mt-2 text-2xl font-bold">24,891</p>
-                <p className="mt-1 text-xs text-emerald-600">+14.7%</p>
-              </div>
+                <p className="text-sm text-muted-foreground">
+                  New Users
+                </p>
 
-              <div className="rounded-xl border bg-background p-4">
-                <p className="text-sm text-muted-foreground">Events</p>
-                <p className="mt-2 text-2xl font-bold">186</p>
-                <p className="mt-1 text-xs text-emerald-600">+5.2%</p>
-              </div>
+                <p className="mt-2 text-2xl font-bold">
+                  {newUsersThisMonth.toLocaleString()}
+                </p>
 
-              <div className="rounded-xl border bg-background p-4">
-                <p className="text-sm text-muted-foreground">Complaints</p>
-                <p className="mt-2 text-2xl font-bold">342</p>
-                <p className="mt-1 text-xs text-red-600">+2.8%</p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  This month
+                </p>
               </div>
             </CardContent>
           </Card>
 
-          {/* Traffic */}
+          {/* Platform Traffic */}
           <Card className="shadow-sm">
             <CardHeader>
-              <CardTitle>Platform Traffic</CardTitle>
+              <CardTitle>Community Activity</CardTitle>
+
               <p className="text-sm text-muted-foreground">
-                Where your users are coming from
+                Current activity across the platform
               </p>
             </CardHeader>
 
             <CardContent className="space-y-5">
-              {[
-                ["Direct", "48%", 48],
-                ["Search", "27%", 27],
-                ["Social Media", "16%", 16],
-                ["Other", "9%", 9],
-              ].map(([source, percentage, value]) => (
-                <div key={source}>
-                  <div className="mb-2 flex justify-between text-sm">
-                    <span className="font-medium">{source}</span>
-                    <span className="text-muted-foreground">
-                      {percentage}
-                    </span>
-                  </div>
 
-                  <Progress value={value} />
+              <div>
+                <div className="mb-2 flex justify-between text-sm">
+                  <span className="font-medium">
+                    Users
+                  </span>
+
+                  <span className="text-muted-foreground">
+                    {totalUsers.toLocaleString()}
+                  </span>
                 </div>
-              ))}
+
+                <Progress value={100} />
+              </div>
+
+              <div>
+                <div className="mb-2 flex justify-between text-sm">
+                  <span className="font-medium">
+                    Posts
+                  </span>
+
+                  <span className="text-muted-foreground">
+                    {totalPosts.toLocaleString()}
+                  </span>
+                </div>
+
+                <Progress
+                  value={
+                    totalUsers > 0
+                      ? Math.min(
+                          (totalPosts / totalUsers) * 100,
+                          100,
+                        )
+                      : 0
+                  }
+                />
+              </div>
+
+              <div>
+                <div className="mb-2 flex justify-between text-sm">
+                  <span className="font-medium">
+                    Comments
+                  </span>
+
+                  <span className="text-muted-foreground">
+                    {totalComments.toLocaleString()}
+                  </span>
+                </div>
+
+                <Progress
+                  value={
+                    totalPosts > 0
+                      ? Math.min(
+                          (totalComments / totalPosts) * 100,
+                          100,
+                        )
+                      : 0
+                  }
+                />
+              </div>
+
+              <div>
+                <div className="mb-2 flex justify-between text-sm">
+                  <span className="font-medium">
+                    Reactions
+                  </span>
+
+                  <span className="text-muted-foreground">
+                    {totalReactions.toLocaleString()}
+                  </span>
+                </div>
+
+                <Progress
+                  value={
+                    totalPosts > 0
+                      ? Math.min(
+                          (totalReactions / totalPosts) * 100,
+                          100,
+                        )
+                      : 0
+                  }
+                />
+              </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Recent Activity */}
+        {/* Recent Posts */}
         <Card className="shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
-              <CardTitle>Recent Activity</CardTitle>
+              <CardTitle>Recent Posts</CardTitle>
+
               <p className="mt-1 text-sm text-muted-foreground">
-                Latest activity across the platform
+                Latest posts from the community
               </p>
             </div>
-
-            <Button variant="outline" size="sm">
-              View all
-            </Button>
           </CardHeader>
 
           <CardContent>
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>User</TableHead>
-                    <TableHead>Activity</TableHead>
-                    <TableHead>Category</TableHead>
-                    <TableHead>Time</TableHead>
-                    <TableHead>Status</TableHead>
-                  </TableRow>
-                </TableHeader>
-
-                <TableBody>
-                  {activities.map((activity) => (
-                    <TableRow key={`${activity.user}-${activity.time}`}>
-                      <TableCell className="font-medium">
-                        {activity.user}
-                      </TableCell>
-
-                      <TableCell>{activity.action}</TableCell>
-
-                      <TableCell>
-                        <span className="rounded-full bg-muted px-2.5 py-1 text-xs font-medium">
-                          {activity.category}
-                        </span>
-                      </TableCell>
-
-                      <TableCell className="text-muted-foreground">
-                        {activity.time}
-                      </TableCell>
-
-                      <TableCell>
-                        <span
-                          className={`rounded-full px-2.5 py-1 text-xs font-medium ${
-                            activity.status === "Completed"
-                              ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400"
-                              : "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-400"
-                          }`}
-                        >
-                          {activity.status}
-                        </span>
-                      </TableCell>
+            {posts.length === 0 ? (
+              <div className="py-10 text-center text-sm text-muted-foreground">
+                No posts available.
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Title</TableHead>
+                      <TableHead>Category</TableHead>
+                      <TableHead>Author</TableHead>
+                      <TableHead>Comments</TableHead>
+                      <TableHead>Reactions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                  </TableHeader>
+
+                  <TableBody>
+                    {posts.slice(0, 5).map((post) => (
+                      <TableRow key={post.id || post._id}>
+                        <TableCell className="max-w-75 truncate font-medium">
+                          {post.title || "Untitled Post"}
+                        </TableCell>
+
+                        <TableCell>
+                          <span className="rounded-full bg-muted px-2.5 py-1 text-xs font-medium">
+                            {post.category || "General"}
+                          </span>
+                        </TableCell>
+
+                        <TableCell>
+                          {post.author?.name || "Unknown"}
+                        </TableCell>
+
+                        <TableCell>
+                          {post.comments?.length || 0}
+                        </TableCell>
+
+                        <TableCell>
+                          {post.reactions?.length || 0}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -459,3 +672,4 @@ function Analytics() {
 }
 
 export default Analytics;
+

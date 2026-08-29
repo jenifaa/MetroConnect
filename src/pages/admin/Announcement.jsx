@@ -169,11 +169,11 @@ function Announcement() {
         description,
       };
 
-      console.log("Creating announcement with payload:", payload);
+      console.log("Creating announcement with payload");
 
       const response = await createAnnouncement(payload).unwrap();
 
-      console.log("Announcement created successfully:", response);
+      console.log("Announcement created successfully");
 
       setCreateOpen(false);
       resetForm();
@@ -246,11 +246,11 @@ function Announcement() {
         },
       };
 
-      console.log("Updating announcement with payload:", payload);
+      console.log("Updating announcement with payload");
 
       const response = await updateAnnouncement(payload).unwrap();
 
-      console.log("Announcement updated successfully:", response);
+      console.log("Announcement updated successfully");
 
       setEditOpen(false);
       resetForm();
@@ -293,13 +293,13 @@ function Announcement() {
     }
 
     try {
-      console.log("Deleting announcement:", selectedAnnouncement._id);
+      console.log("Deleting announcement");
 
       const response = await deleteAnnouncement(
         selectedAnnouncement._id,
       ).unwrap();
 
-      console.log("Announcement deleted successfully:", response);
+      console.log("Announcement deleted successfully");
 
       setDeleteOpen(false);
       setSelectedAnnouncement(null);
