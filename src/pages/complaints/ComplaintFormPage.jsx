@@ -64,7 +64,7 @@ export default function ComplaintFormPage() {
       await createComplaint(data).unwrap();
       // toast.success("Complaint submitted successfully! 🎉");
       console.log("Complaint submitted successfully! 🎉");
-      navigate("/complains");
+      navigate("/user/complaints");
     } catch (err) {
       // toast.error(err?.data?.message || "Could not file complaint");
       console.log(err);
@@ -75,7 +75,7 @@ export default function ComplaintFormPage() {
     <div className="container mx-auto px-4 py-8 max-w-2xl space-y-6 mt-14">
       <div>
         <Button
-          onClick={() => navigate("/complains")}
+          onClick={() => navigate("/user/complaints")}
           variant="ghost"
           className="rounded-xl gap-2 text-muted-foreground"
         >

@@ -5,12 +5,12 @@ import CreatePost from "@/pages/post/CreatePost";
 
 import QuestionFormPage from "@/pages/questions/QuestionFormPage";
 import AnnouncementsListPage from "@/pages/announcements/AnnouncementsListPage";
-import Events from "@/pages/student/Events";
+
 import MyComplains from "@/pages/student/MyComplains";
 import MyPosts from "@/pages/student/MyPosts";
 import NotificationsPage from "@/pages/student/NotificationsPage";
 import ProfilePage from "@/pages/student/ProfilePage";
-import Settings from "@/pages/student/Settings";
+
 import StudentDashboard from "@/pages/student/StudentDashboard";
 
 
@@ -61,20 +61,11 @@ export const userSidebarItems = [
         component: AnnouncementsListPage
       },
       {
-        title:"Events",
-        url:"/user/events",
-        component: Events
-      },
-      {
         title:"My Complains",
         url:"/user/complaints",
         component: MyComplains
       },
-      {
-        title:"Settings",
-        url:"/user/settings",
-        component: Settings
-      },
+    
      
     ],
   },

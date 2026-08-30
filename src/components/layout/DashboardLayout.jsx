@@ -11,8 +11,7 @@ import {
   X,
   User,
   Bell,
-  CalendarDays,
-  Settings,
+
   FileText,
 } from "lucide-react";
 
@@ -88,11 +87,7 @@ const studentNavLinks = [
     label: "Announcements",
     icon: Megaphone,
   },
-  {
-    to: "/user/events",
-    label: "Events",
-    icon: CalendarDays,
-  },
+
   {
     to: "/user/complaints",
     label: "My Complaints",
@@ -103,11 +98,7 @@ const studentNavLinks = [
     label: "Notifications",
     icon: Bell,
   },
-  {
-    to: "/user/settings",
-    label: "Settings",
-    icon: Settings,
-  },
+
 ];
 
 export default function DashboardLayout() {
