@@ -54,7 +54,7 @@ export default function AboutUs() {
       <section className="relative isolate overflow-hidden bg-slate-50">
         {/* Background decoration */}
         <div className="pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute left-1/2 top-[-300px] h-[650px] w-[650px] -translate-x-1/2 rounded-full bg-indigo-100/70 blur-3xl" />
+          <div className="absolute left-1/2 -top-75 h-162.5 w-162.5 -translate-x-1/2 rounded-full bg-indigo-100/70 blur-3xl" />
 
           <div className="absolute -left-48 top-1/2 h-96 w-96 rounded-full bg-violet-100/50 blur-3xl" />
 
@@ -79,7 +79,7 @@ export default function AboutUs() {
 
             <h1 className="mt-8 text-5xl font-bold leading-[1.05] tracking-[-0.04em] text-slate-950 sm:text-6xl lg:text-7xl">
               Building a community
-              <span className="block bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-500 bg-clip-text text-transparent">
+              <span className="block bg-linear-to-r from-indigo-600 via-violet-600 to-indigo-500 bg-clip-text text-transparent">
                 worth coming back to.
               </span>
             </h1>
@@ -122,9 +122,9 @@ export default function AboutUs() {
           <div className="relative">
             <div className="absolute -left-6 -top-6 h-32 w-32 rounded-full bg-indigo-100 blur-2xl" />
 
-            <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-indigo-500 via-violet-500 to-blue-600 p-2 shadow-2xl shadow-indigo-950/15">
+            <div className="relative overflow-hidden rounded-[2.5rem] bg-linear-to-br from-indigo-500 via-violet-500 to-blue-600 p-2 shadow-2xl shadow-indigo-950/15">
               <div className="rounded-[2.2rem] border border-white/20 bg-white/10 p-8 backdrop-blur-sm sm:p-10">
-                <div className="flex min-h-[420px] flex-col justify-between">
+                <div className="flex min-h-105 flex-col justify-between">
                   <div>
                     <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-xl font-bold text-indigo-600 shadow-lg">
                       M
@@ -319,7 +319,7 @@ export default function AboutUs() {
               {features.map(({ icon: Icon, title, text }) => (
                 <div
                   key={title}
-                  className="group flex gap-5 rounded-3xl border border-white/10 bg-white/[0.04] p-6 transition hover:border-white/20 hover:bg-white/[0.07] sm:p-7"
+                  className="group flex gap-5 rounded-3xl border border-white/10 bg-white/4 p-6 transition hover:border-white/20 hover:bg-white/[0.07] sm:p-7"
                 >
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-400">
                     <Icon className="h-5 w-5" />
@@ -366,7 +366,7 @@ export default function AboutUs() {
       {/* =====================================================
           CTA
       ====================================================== */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-violet-600 to-indigo-700">
+      <section className="relative overflow-hidden bg-linear-to-br from-indigo-600 via-violet-600 to-indigo-700">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -left-40 -top-40 h-96 w-96 rounded-full bg-white/10 blur-3xl" />
           <div className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-white/10 blur-3xl" />
