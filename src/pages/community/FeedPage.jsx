@@ -329,11 +329,26 @@ export default function FeedPage() {
               {posts.map((post) => {
                 const postId = post.id || post._id;
 
-                const isOwner =
-                  currentUser?.id === post?.author?.id ||
-                  currentUser?._id === post?.author?._id ||
+                const getId = (value) => {
+                  if (!value) return "";
+                  if (typeof value === "string") return value;
+
+                  return String(value._id || value.id || value);
+                };
+
+                const currentUserId = getId(
+                  currentUser?._id || currentUser?.id || currentUser?.userId,
+                );
+
+                const authorId = getId(post.author);
+
+                const isOwner = currentUserId === authorId;
+
+                const isAdmin =
                   currentUser?.role === "ADMIN" ||
                   currentUser?.role === "SUPER_ADMIN";
+
+                const canManagePost = isOwner || isAdmin;
 
                 return (
                   <Card
@@ -417,7 +432,7 @@ export default function FeedPage() {
                             OWNER ACTIONS
                         ============================================== */}
 
-                        {isOwner && (
+                        {canManagePost && (
                           <div className="mt-4 flex items-center justify-end gap-1 border-b pb-3">
                             <Link to={`/posts/${postId}/edit`}>
                               <Button

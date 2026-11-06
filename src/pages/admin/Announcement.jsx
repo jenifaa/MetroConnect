@@ -240,15 +240,12 @@ function Announcement() {
     try {
       const payload = {
         id: selectedAnnouncement._id,
-        data: {
-          title,
-          description,
-        },
+        title,
+        description,
       };
 
-      console.log("Updating announcement with payload");
-
-      const response = await updateAnnouncement(payload).unwrap();
+      console.log("Updating announcement with payload:", payload);
+      await updateAnnouncement(payload).unwrap();
 
       console.log("Announcement updated successfully");
 
@@ -295,9 +292,7 @@ function Announcement() {
     try {
       console.log("Deleting announcement");
 
-      const response = await deleteAnnouncement(
-        selectedAnnouncement._id,
-      ).unwrap();
+      await deleteAnnouncement(selectedAnnouncement._id).unwrap();
 
       console.log("Announcement deleted successfully");
 

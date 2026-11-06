@@ -26,6 +26,12 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 // import { toast } from "../ui/toast";
 import config from "@/config";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "../ui/input-otp";
 
 const registerSchema = z
   .object({
@@ -33,8 +39,11 @@ const registerSchema = z
       message: "Name is too short",
     }),
 
-    email: z.string().email({
+    email: z.email({
       message: "Invalid email",
+    }),
+    studentId: z.string().min(9, {
+      message: "STudent ID must be 9 numbers",
     }),
 
     password: z.string().min(8, {
@@ -61,6 +70,7 @@ export default function RegisterForm({ className, ...props }) {
     defaultValues: {
       name: "",
       email: "",
+      studentId: "",
       password: "",
       confirmPassword: "",
     },
@@ -71,6 +81,7 @@ export default function RegisterForm({ className, ...props }) {
       const userInfo = {
         name: data.name,
         email: data.email,
+        studentId: data.studentId,
         password: data.password,
         role: "USER",
       };
@@ -250,6 +261,43 @@ export default function RegisterForm({ className, ...props }) {
                             )}
                           />
                         </div>
+
+                        {fieldState.error && (
+                          <FieldError errors={[fieldState.error]} />
+                        )}
+                      </Field>
+                    )}
+                  />
+                  {/* Student Id */}
+                  <Controller
+                    name="studentId"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel className="mb-2 text-sm font-semibold text-slate-700">
+                          Student ID
+                        </FieldLabel>
+
+                        <InputOTP {...field} maxLength={9}>
+                          <InputOTPGroup>
+                            <InputOTPSlot index={0} />
+                            <InputOTPSlot index={1} />
+                            <InputOTPSlot index={2} />
+                          </InputOTPGroup>
+                          <InputOTPSeparator />
+                          <InputOTPGroup>
+                            <InputOTPSlot index={3} />
+                            <InputOTPSlot index={4} />
+                            <InputOTPSlot index={5} />
+                          </InputOTPGroup>
+                          <InputOTPSeparator />
+
+                          <InputOTPGroup>
+                            <InputOTPSlot index={6} />
+                            <InputOTPSlot index={7} />
+                            <InputOTPSlot index={8} />
+                          </InputOTPGroup>
+                        </InputOTP>
 
                         {fieldState.error && (
                           <FieldError errors={[fieldState.error]} />

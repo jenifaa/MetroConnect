@@ -5,7 +5,6 @@ import {
   AlertOctagon,
   Search,
   Bell,
-
   ArrowRight,
   Megaphone,
   PlusCircle,
@@ -30,7 +29,9 @@ export default function StudentDashboard() {
   const complaints = complaintsResponse?.data || [];
   const notifications = notificationsResponse?.data || [];
 
-  const unreadNotificationsCount = notifications.filter((n) => !n.isRead).length;
+  const unreadNotificationsCount = notifications.filter(
+    (n) => !n.isRead,
+  ).length;
 
   const quickActions = [
     {
@@ -38,14 +39,16 @@ export default function StudentDashboard() {
       desc: "Share news or start a campus discussion",
       href: "/user/posts/new",
       icon: MessageSquare,
-      color: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-200/50",
+      color:
+        "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-200/50",
     },
     {
       title: "Ask Question",
       desc: "Get help with courses from peers",
       href: "/user/questions/new",
       icon: HelpCircle,
-      color: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-200/50",
+      color:
+        "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-200/50",
     },
     {
       title: "Submit Complaint",
@@ -59,7 +62,8 @@ export default function StudentDashboard() {
       desc: "Register a lost or found item",
       href: "/user/lost-found/new",
       icon: Search,
-      color: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-200/50",
+      color:
+        "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-200/50",
     },
   ];
 
@@ -109,7 +113,8 @@ export default function StudentDashboard() {
               👋
             </h1>
             <p className="text-slate-400 max-w-xl text-sm md:text-base">
-              Here is what is happening around your campus community today. Connect with peers, view updates, or file academic feedback.
+              Here is what is happening around your campus community today.
+              Connect with peers, view updates, or file academic feedback.
             </p>
           </div>
           <div className="flex items-center gap-4 shrink-0">
@@ -120,8 +125,16 @@ export default function StudentDashboard() {
             />
             <div className="text-left">
               <p className="font-semibold text-lg">{student.name}</p>
-              <p className="text-xs text-slate-400 font-mono">ID: {student.studentId || "2026-MU-102"}</p>
-              <p className="text-xs text-slate-400">{student.department || "Computer Science & Engineering"}</p>
+              <p className="text-xs text-slate-400 font-mono">
+                ID:{" "}
+                {student.studentId?.replace(
+                  /^(\d{3})(\d{3})(\d{3})$/,
+                  "$1-$2-$3",
+                ) || "2026-MU-102"}
+              </p>
+              <p className="text-xs text-slate-400">
+                {student.department || "Computer Science & Engineering"}
+              </p>
             </div>
           </div>
         </div>
@@ -165,10 +178,17 @@ export default function StudentDashboard() {
           {/* Stat Cards */}
           <div className="grid gap-4 sm:grid-cols-2">
             {statCards.map((card) => (
-              <Card key={card.title} className="border border-muted rounded-2xl p-6 shadow-xs flex items-center justify-between">
+              <Card
+                key={card.title}
+                className="border border-muted rounded-2xl p-6 shadow-xs flex items-center justify-between"
+              >
                 <div className="space-y-1">
-                  <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{card.title}</span>
-                  <p className="text-3xl font-black text-foreground">{card.value}</p>
+                  <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
+                    {card.title}
+                  </span>
+                  <p className="text-3xl font-black text-foreground">
+                    {card.value}
+                  </p>
                   <p className="text-xs text-muted-foreground">{card.desc}</p>
                 </div>
                 <div className="p-3 bg-muted rounded-xl text-muted-foreground">
@@ -184,7 +204,10 @@ export default function StudentDashboard() {
               <h2 className="text-lg font-bold tracking-tight text-foreground">
                 Complaint Status Tracker
               </h2>
-              <Link to="/user/complaints" className="text-xs font-semibold text-primary hover:underline">
+              <Link
+                to="/user/complaints"
+                className="text-xs font-semibold text-primary hover:underline"
+              >
                 View All Complaints
               </Link>
             </div>
@@ -195,19 +218,31 @@ export default function StudentDashboard() {
                 </div>
               ) : (
                 complaints.slice(0, 3).map((item) => (
-                  <div key={item.id || item._id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-muted/10">
+                  <div
+                    key={item.id || item._id}
+                    className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-muted/10"
+                  >
                     <div className="space-y-1">
-                      <p className="font-semibold text-sm text-foreground">{item.title}</p>
+                      <p className="font-semibold text-sm text-foreground">
+                        {item.title}
+                      </p>
                       <p className="text-xs text-muted-foreground">
-                        Submitted on {new Date(item.createdAt).toLocaleDateString()}
+                        Submitted on{" "}
+                        {new Date(item.createdAt).toLocaleDateString()}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold border ${getStatusStyle(item.status)}`}>
+                      <span
+                        className={`px-2.5 py-0.5 rounded-full text-xs font-semibold border ${getStatusStyle(item.status)}`}
+                      >
                         {item.status}
                       </span>
                       <Link to={`/complaints/${item.id || item._id}`}>
-                        <Button variant="ghost" size="sm" className="rounded-lg">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="rounded-lg"
+                        >
                           Details
                         </Button>
                       </Link>
@@ -234,7 +269,10 @@ export default function StudentDashboard() {
                 </Card>
               ) : (
                 announcements.map((item) => (
-                  <Link key={item.id || item._id} to={`/announcements/${item.id || item._id}`}>
+                  <Link
+                    key={item.id || item._id}
+                    to={`/announcements/${item.id || item._id}`}
+                  >
                     <Card className="p-4 hover:shadow-xs transition border border-muted rounded-2xl bg-card space-y-2 hover:border-indigo-200/50 cursor-pointer group">
                       <span className="inline-flex text-[9px] font-bold tracking-wider text-indigo-600 bg-indigo-500/10 px-2 py-0.5 rounded-full">
                         {item.category || "GENERAL"}
@@ -254,7 +292,10 @@ export default function StudentDashboard() {
               )}
             </div>
             {announcements.length > 0 && (
-              <Link to="/user/announcements" className="block text-center text-xs font-semibold text-primary hover:underline pt-2">
+              <Link
+                to="/user/announcements"
+                className="block text-center text-xs font-semibold text-primary hover:underline pt-2"
+              >
                 Browse Announcements Archive
               </Link>
             )}

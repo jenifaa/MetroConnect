@@ -99,6 +99,8 @@ export const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["USER"],
     }),
+
+   
   }),
 });
 
@@ -119,4 +121,5 @@ export const {
   useSearchUsersQuery,
   useLazySearchUsersQuery,
   useDeleteUserMutation,
+ 
 } = authApi;
