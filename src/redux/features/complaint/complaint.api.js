@@ -22,7 +22,7 @@ export const complaintApi = baseApi.injectEndpoints({
 
     getComplaintById: builder.query({
       query: (id) => ({
-        url: `/complains/${id}`,
+        url: `/complains/me/${id}`,
         method: "GET",
       }),
       providesTags: ["COMPLAINT"],

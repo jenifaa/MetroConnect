@@ -235,7 +235,7 @@ export default function ComplaintFormPage() {
               <Button
                 type="button"
                 variant="ghost"
-                onClick={() => navigate("/complaints")}
+                onClick={() => navigate("/user/complaints")}
                 className="rounded-xl h-11"
                 disabled={isLoading}
               >

@@ -1,9 +1,9 @@
 import { useParams, useNavigate } from "react-router";
-import { ArrowLeft, Clock, ShieldCheck, User, CheckCircle2, MessageSquare, AlertCircle } from "lucide-react";
+import { ArrowLeft, Clock, ShieldCheck, User, CheckCircle2, AlertCircle } from "lucide-react";
 import { useGetComplaintByIdQuery } from "@/redux/features/complaint/complaint.api";
 import { LoadingState, ErrorState } from "@/components/common/States";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function ComplaintDetailPage() {
   const { complaintId } = useParams();
@@ -75,7 +75,7 @@ export default function ComplaintDetailPage() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-3xl space-y-6 mt-14">
       <div>
-        <Button onClick={() => navigate("/complaints")} variant="ghost" className="rounded-xl gap-2 text-muted-foreground">
+        <Button onClick={() => navigate("/user/complaints")} variant="ghost" className="rounded-xl gap-2 text-muted-foreground">
           <ArrowLeft className="h-4 w-4" />
           Back to Complaints
         </Button>
@@ -186,7 +186,7 @@ export default function ComplaintDetailPage() {
 
       {/* Admin feedback / Resolution comments */}
       {complaint.adminResponse && (
-        <Card className="border border-muted rounded-3xl overflow-hidden shadow-xs border-green-200/50 dark:border-green-950/30">
+        <Card className="border  rounded-3xl overflow-hidden shadow-xs border-green-200/50 dark:border-green-950/30">
           <div className="bg-green-500/5 p-4 border-b border-green-200/30 dark:bg-green-950/10 flex items-center gap-2">
             {complaint.status === "Rejected" ? (
               <>
