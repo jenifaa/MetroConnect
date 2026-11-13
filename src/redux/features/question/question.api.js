@@ -47,7 +47,7 @@ export const questionApi = baseApi.injectEndpoints({
 
     addAnswer: builder.mutation({
       query: ({ id, content }) => ({
-        url: `/questions/${id}/answers`,
+        url: `/questions/${id}/comments`,
         method: "POST",
         data: { content },
       }),
@@ -56,8 +56,22 @@ export const questionApi = baseApi.injectEndpoints({
 
     upvoteAnswer: builder.mutation({
       query: (id) => ({
-        url: `/answers/${id}/upvote`,
+        url: `/comments/${id}/upvote`,
         method: "POST",
+      }),
+      invalidatesTags: ["QUESTION"],
+    }),
+    updateQuestionStatus: builder.mutation({
+      query: (id) => ({
+        url: `/${id}/solved`,
+        method: "POST",
+      }),
+      invalidatesTags: ["QUESTION"],
+    }),
+    deleteAnswer: builder.mutation({
+      query: (id, commentId) => ({
+        url: `${id}/comments/${commentId}`,
+        method: "DELETE",
       }),
       invalidatesTags: ["QUESTION"],
     }),
@@ -72,4 +86,6 @@ export const {
   useDeleteQuestionMutation,
   useAddAnswerMutation,
   useUpvoteAnswerMutation,
+  useDeleteAnswerMutation,
+  useUpdateQuestionStatusMutation
 } = questionApi;
