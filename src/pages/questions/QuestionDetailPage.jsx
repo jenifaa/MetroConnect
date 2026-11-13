@@ -1,30 +1,43 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router";
+import { Link, useParams, useNavigate } from "react-router";
 import {
-
-  ThumbsUp,
   ArrowLeft,
-  Clock,
-  BookOpen,
-  Send,
   CheckCircle2,
+  RotateCcw,
+  Trash2,
+  Send,
+  Loader2,
+  MessageSquare,
 } from "lucide-react";
 import {
   useGetQuestionByIdQuery,
   useAddAnswerMutation,
-  useUpvoteAnswerMutation,
+  useDeleteAnswerMutation,
+  useDeleteQuestionMutation,
+  useUpdateQuestionStatusMutation,
 } from "@/redux/features/question/question.api";
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
-import { LoadingState,  ErrorState } from "@/components/common/States";
+import { LoadingState, ErrorState } from "@/components/common/States";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-// import { toast } from "@/components/ui/toast";
-
+import { cn } from "@/lib/utils";
+import {
+  Avatar,
+  CategoryBadge,
+  InlineError,
+  StatusBadge,
+  TagList,
+  getErrorMessage,
+  getId,
+  timeAgo,
+} from "./QuestionParts";
+ 
+const ADMIN_ROLES = ["ADMIN", "SUPER_ADMIN"];
+ 
 export default function QuestionDetailPage() {
   const { questionId } = useParams();
   const navigate = useNavigate();
-
+ 
   const { data: userResponse } = useUserInfoQuery(undefined);
   const {
     data: questionResponse,
@@ -32,191 +45,294 @@ export default function QuestionDetailPage() {
     isError,
     refetch,
   } = useGetQuestionByIdQuery(questionId);
-
-  const [addAnswer] = useAddAnswerMutation();
-  const [upvoteAnswer] = useUpvoteAnswerMutation();
-
+ 
+  const [addAnswer, { isLoading: isPosting }] = useAddAnswerMutation();
+  const [deleteAnswer] = useDeleteAnswerMutation();
+  const [deleteQuestion, { isLoading: isDeleting }] = useDeleteQuestionMutation();
+  const [updateStatus, { isLoading: isUpdatingStatus }] =
+    useUpdateQuestionStatusMutation();
+ 
+  const [answerText, setAnswerText] = useState("");
+  const [error, setError] = useState("");
+  const [deletingId, setDeletingId] = useState(null);
+ 
   const currentUser = userResponse?.data || {};
   const question = questionResponse?.data || {};
-
-  const [answerText, setAnswerText] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const comments = question.comments || [];
+ 
+  const currentUserId = String(getId(currentUser) || "");
+  const isLoggedIn = Boolean(currentUserId);
+  const isAuthor = isLoggedIn && String(getId(question.author)) === currentUserId;
+  const isAdmin = ADMIN_ROLES.includes(currentUser.role);
+ 
+  // Mirrors the backend rule: comment author, question author or admin
+  const canDeleteComment = (comment) =>
+    isLoggedIn && (String(getId(comment.author)) === currentUserId || isAuthor || isAdmin);
+ 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-8 max-w-4xl mt-14">
-        <LoadingState message="Loading question detail..." items={1} />
+      <div className="container mx-auto mt-14 max-w-3xl px-4 py-8">
+        <LoadingState message="Loading question..." items={1} />
       </div>
     );
   }
-
+ 
   if (isError || !question.title) {
     return (
-      <div className="container mx-auto px-4 py-8 max-w-4xl mt-14">
+      <div className="container mx-auto mt-14 max-w-3xl space-y-4 px-4 py-8">
         <ErrorState
-          title="Question Not Found"
-          message="This academic query could not be located or has been deleted."
+          title="Question not found"
+          message="It may have been deleted, or the link is wrong."
           onRetry={refetch}
         />
-        <div className="text-center mt-4">
-          <Button onClick={() => navigate("/questions")} variant="outline" className="rounded-xl">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to List
+        <div className="text-center">
+          <Button variant="outline" className="rounded-xl" onClick={() => navigate("/questions")}>
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to questions
           </Button>
         </div>
       </div>
     );
   }
-
+ 
+  const handleToggleSolved = async () => {
+    setError("");
+    try {
+      await updateStatus({ id: getId(question), isSolved: !question.isSolved }).unwrap();
+    } catch (err) {
+      setError(getErrorMessage(err, "Could not update the status."));
+    }
+  };
+ 
+  const handleDeleteQuestion = async () => {
+    if (!window.confirm("Delete this question? This cannot be undone.")) return;
+    setError("");
+    try {
+      await deleteQuestion(getId(question)).unwrap();
+      navigate("/questions");
+    } catch (err) {
+      setError(getErrorMessage(err, "Could not delete the question."));
+    }
+  };
+ 
   const handleAnswerSubmit = async (e) => {
     e.preventDefault();
-    if (!answerText.trim()) return;
-
-    setIsSubmitting(true);
+    const content = answerText.trim();
+    if (!content) return;
+    setError("");
     try {
-      await addAnswer({ id: question.id || question._id, content: answerText }).unwrap();
-      // toast.success("Answer posted successfully!");
-      console.log("Answer posted successfully!");
+      await addAnswer({ id: getId(question), content }).unwrap();
       setAnswerText("");
     } catch (err) {
-      // toast.error(err?.data?.message || "Could not publish answer");
-      console.log(err);
-    } finally {
-      setIsSubmitting(false);
+      setError(getErrorMessage(err, "Could not post your answer."));
     }
   };
-
-  const handleUpvote = async (answerId) => {
+ 
+  const handleDeleteComment = async (commentId) => {
+    if (!window.confirm("Delete this answer?")) return;
+    setError("");
+    setDeletingId(commentId);
     try {
-      await upvoteAnswer(answerId).unwrap();
+      await deleteAnswer({ id: getId(question), commentId }).unwrap();
     } catch (err) {
-      // toast.error(err?.data?.message || "Could not register upvote");
-      console.log(err);
+      setError(getErrorMessage(err, "Could not delete the answer."));
+    } finally {
+      setDeletingId(null);
     }
   };
-
+ 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl space-y-6 mt-14">
-      {/* Back button */}
-      <div>
-        <Button onClick={() => navigate("/questions")} variant="ghost" className="rounded-xl gap-2 text-muted-foreground">
-          <ArrowLeft className="h-4 w-4" />
-          Back to Q&A
-        </Button>
-      </div>
-
-      {/* Main Question Card */}
-      <Card className="border border-muted rounded-3xl overflow-hidden shadow-xs">
-        <CardContent className="p-6 md:p-8 space-y-5">
-          {/* Header */}
-          <div className="flex items-center justify-between border-b pb-4">
-            <div className="flex items-center gap-3">
-              <img
-                src={question.author?.picture || "https://i.ibb.co.com/xttK0CDW/pp.jpg"}
-                alt="Author"
-                className="w-10 h-10 rounded-full object-cover border"
-              />
-              <div>
-                <p className="font-bold text-foreground">{question.author?.name || "Student"}</p>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
-                  <Clock className="h-3 w-3" />
-                  <span>{new Date(question.createdAt).toLocaleString()}</span>
-                </div>
-              </div>
-            </div>
-
-            <span className="inline-flex items-center gap-1.5 text-xs font-bold tracking-wider text-indigo-600 bg-indigo-500/10 border border-indigo-200/20 px-3 py-1 rounded-full uppercase">
-              <BookOpen className="h-3.5 w-3.5" />
-              {question.category || "General"}
-            </span>
+    <div className="container mx-auto mt-14 max-w-3xl space-y-6 px-4 py-8">
+      <Button
+        variant="ghost"
+        onClick={() => navigate("/questions")}
+        className="-ml-3 gap-2 rounded-xl text-muted-foreground"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        All questions
+      </Button>
+ 
+      {/* Question */}
+      <Card className="relative overflow-hidden rounded-3xl shadow-none">
+        <span
+          className={cn(
+            "absolute inset-x-0 top-0 h-1",
+            question.isSolved ? "bg-emerald-500" : "bg-indigo-500/70",
+          )}
+        />
+        <CardContent className="space-y-6 p-6 md:p-8">
+          <div className="flex flex-wrap items-center gap-2">
+            <StatusBadge isSolved={question.isSolved} />
+            <CategoryBadge category={question.category} />
           </div>
-
-          {/* Title and Content */}
+ 
           <div className="space-y-4">
-            <h1 className="text-xl md:text-2xl font-bold tracking-tight text-foreground font-serif leading-tight">
+            <h1 className="font-serif text-2xl font-bold leading-tight tracking-tight md:text-3xl">
               {question.title}
             </h1>
-            <p className="text-sm md:text-base text-muted-foreground leading-relaxed whitespace-pre-line">
-              {question.description || question.content}
+            <p className="whitespace-pre-line text-base leading-7 text-foreground/85">
+              {question.description}
             </p>
+            <TagList tags={question.tags} />
+          </div>
+ 
+          <div className="flex flex-wrap items-center justify-between gap-4 border-t pt-5">
+            <div className="flex items-center gap-3">
+              <Avatar user={question.author} size="lg" />
+              <div>
+                <p className="text-sm font-semibold">{question.author?.name || "Student"}</p>
+                <p className="text-xs text-muted-foreground" title={new Date(question.createdAt).toLocaleString()}>
+                  Asked {timeAgo(question.createdAt)}
+                  {question.isSolved && question.solvedAt && (
+                    <> · solved {timeAgo(question.solvedAt)}</>
+                  )}
+                </p>
+              </div>
+            </div>
+ 
+            {(isAuthor || isAdmin) && (
+              <div className="flex gap-2">
+                {isAuthor && (
+                  <Button
+                    onClick={handleToggleSolved}
+                    disabled={isUpdatingStatus}
+                    variant={question.isSolved ? "outline" : "default"}
+                    className={cn(
+                      "gap-2 rounded-xl",
+                      !question.isSolved && "bg-emerald-600 text-white hover:bg-emerald-700",
+                    )}
+                  >
+                    {isUpdatingStatus ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : question.isSolved ? (
+                      <RotateCcw className="h-4 w-4" />
+                    ) : (
+                      <CheckCircle2 className="h-4 w-4" />
+                    )}
+                    {question.isSolved ? "Reopen question" : "Mark as solved"}
+                  </Button>
+                )}
+                <Button
+                  onClick={handleDeleteQuestion}
+                  disabled={isDeleting}
+                  variant="outline"
+                  size="icon"
+                  className="rounded-xl text-destructive hover:text-destructive"
+                  aria-label="Delete question"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
-
-      {/* Answers Section */}
-      <div className="space-y-4">
-        <h2 className="text-lg font-bold tracking-tight text-foreground flex items-center gap-2">
-          <CheckCircle2 className="h-5 w-5 text-indigo-500" />
-          Answers ({question.answers?.length || 0})
+ 
+      <InlineError message={error} />
+ 
+      {/* Answers */}
+      <section className="space-y-4">
+        <h2 className="flex items-center gap-2 text-lg font-semibold tracking-tight">
+          <MessageSquare className="h-5 w-5 text-indigo-500" />
+          {comments.length} {comments.length === 1 ? "answer" : "answers"}
         </h2>
-
-        {/* Answer Input form */}
-        <form onSubmit={handleAnswerSubmit} className="flex gap-2">
-          <Input
-            value={answerText}
-            onChange={(e) => setAnswerText(e.target.value)}
-            placeholder="Type your explanation or course answer here..."
-            className="rounded-xl flex-1 h-11 border-muted focus-visible:ring-indigo-500"
-            disabled={isSubmitting}
-          />
-          <Button type="submit" className="rounded-xl h-11 px-4 gap-1.5 shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white" disabled={isSubmitting || !answerText.trim()}>
-            <Send className="h-3.5 w-3.5" />
-            <span>Answer</span>
-          </Button>
-        </form>
-
-        {/* Answers List */}
-        <div className="space-y-4">
-          {(!question.answers || question.answers.length === 0) ? (
-            <div className="p-8 text-center text-sm text-muted-foreground border border-dashed rounded-3xl bg-card">
-              No solutions provided yet. Be the first to help out!
+ 
+        {/* Composer */}
+        {isLoggedIn ? (
+          <form onSubmit={handleAnswerSubmit} className="space-y-3 rounded-2xl border bg-card p-4">
+            <div className="flex gap-3">
+              <Avatar user={currentUser} />
+              <textarea
+                value={answerText}
+                onChange={(e) => setAnswerText(e.target.value)}
+                onKeyDown={(e) => {
+                  if ((e.ctrlKey || e.metaKey) && e.key === "Enter") handleAnswerSubmit(e);
+                }}
+                rows={3}
+                maxLength={2000}
+                disabled={isPosting}
+                placeholder="Write an answer that would have helped you when you were stuck..."
+                className="min-h-[84px] w-full resize-y rounded-xl border bg-background px-3 py-2 text-sm leading-relaxed outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+              />
             </div>
-          ) : (
-            question.answers.map((answer) => (
-              <div
-                key={answer.id || answer._id}
-                className="flex gap-4 bg-card border rounded-2xl p-5 shadow-2xs hover:border-indigo-100 dark:hover:border-indigo-950 transition"
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-muted-foreground">
+                Ctrl + Enter to post · {answerText.length}/2000
+              </span>
+              <Button
+                type="submit"
+                disabled={isPosting || !answerText.trim()}
+                className="gap-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700"
               >
-                {/* Upvotes bar */}
-                <div className="flex flex-col items-center gap-1 self-start">
-                  <Button
-                    onClick={() => handleUpvote(answer.id || answer._id)}
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 rounded-lg hover:bg-indigo-500/10 hover:text-indigo-600"
-                    aria-label="Upvote answer"
-                  >
-                    <ThumbsUp className="h-4 w-4" />
-                  </Button>
-                  <span className="text-xs font-bold text-muted-foreground">
-                    {answer.upvotes?.length || 0}
-                  </span>
-                </div>
-
-                <div className="flex-1 space-y-2">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={answer.author?.picture || "https://i.ibb.co.com/xttK0CDW/pp.jpg"}
-                      alt="Author"
-                      className="h-6 w-6 rounded-full object-cover border"
-                    />
-                    <span className="text-xs font-bold text-foreground">
-                      {answer.author?.name || "Student"}
-                    </span>
-                    <span className="text-[10px] text-muted-foreground">
-                      {new Date(answer.createdAt).toLocaleDateString()}
-                    </span>
+                {isPosting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+                Post answer
+              </Button>
+            </div>
+          </form>
+        ) : (
+          <div className="rounded-2xl border border-dashed bg-card p-5 text-center text-sm text-muted-foreground">
+            <Link to="/login" className="font-semibold text-primary hover:underline">
+              Log in
+            </Link>{" "}
+            to answer this question.
+          </div>
+        )}
+ 
+        {/* List */}
+        {comments.length === 0 ? (
+          <div className="rounded-2xl border border-dashed p-8 text-center text-sm text-muted-foreground">
+            No answers yet. If you know this one, you can be the first to help.
+          </div>
+        ) : (
+          <ul className="space-y-3">
+            {comments.map((comment) => {
+              const id = getId(comment);
+              const isQuestionAuthor =
+                String(getId(comment.author)) === String(getId(question.author));
+              return (
+                <li key={id} className="flex gap-3 rounded-2xl border bg-card p-4">
+                  <Avatar user={comment.author} />
+                  <div className="min-w-0 flex-1 space-y-1.5">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex flex-wrap items-center gap-x-2 text-sm">
+                        <span className="font-semibold">{comment.author?.name || "Student"}</span>
+                        {isQuestionAuthor && (
+                          <span className="rounded-md bg-indigo-500/10 px-1.5 py-0.5 text-[11px] font-medium text-indigo-600 dark:text-indigo-400">
+                            Asker
+                          </span>
+                        )}
+                        <span className="text-xs text-muted-foreground">
+                          {timeAgo(comment.createdAt)}
+                        </span>
+                      </div>
+                      {canDeleteComment(comment) && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          disabled={deletingId === id}
+                          onClick={() => handleDeleteComment(id)}
+                          className="h-8 w-8 rounded-lg text-muted-foreground hover:text-destructive"
+                          aria-label="Delete answer"
+                        >
+                          {deletingId === id ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <Trash2 className="h-4 w-4" />
+                          )}
+                        </Button>
+                      )}
+                    </div>
+                    <p className="whitespace-pre-line break-words text-sm leading-relaxed text-foreground/85">
+                      {comment.content}
+                    </p>
                   </div>
-
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {answer.content}
-                  </p>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-      </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </section>
     </div>
   );
 }
+ 

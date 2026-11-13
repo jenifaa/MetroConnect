@@ -18,6 +18,10 @@ export const questionApi = baseApi.injectEndpoints({
       }),
       providesTags: ["QUESTION"],
     }),
+    getMyQuestions: builder.query({
+      query: (params) => ({ url: "/questions/me", method: "GET", params }),
+      providesTags: ["QUESTION"],
+    }),
 
     createQuestion: builder.mutation({
       query: (data) => ({
@@ -62,15 +66,16 @@ export const questionApi = baseApi.injectEndpoints({
       invalidatesTags: ["QUESTION"],
     }),
     updateQuestionStatus: builder.mutation({
-      query: (id) => ({
-        url: `/${id}/solved`,
-        method: "POST",
+      query: ({ id, isSolved }) => ({
+        url: `/questions/${id}/solved`,
+        method: "PATCH",
+        data: { isSolved },
       }),
       invalidatesTags: ["QUESTION"],
     }),
     deleteAnswer: builder.mutation({
-      query: (id, commentId) => ({
-        url: `${id}/comments/${commentId}`,
+      query: ({ id, commentId }) => ({
+        url: `/questions/${id}/comments/${commentId}`,
         method: "DELETE",
       }),
       invalidatesTags: ["QUESTION"],
@@ -87,5 +92,6 @@ export const {
   useAddAnswerMutation,
   useUpvoteAnswerMutation,
   useDeleteAnswerMutation,
-  useUpdateQuestionStatusMutation
+  useUpdateQuestionStatusMutation,
+  useGetMyQuestionsQuery,
 } = questionApi;

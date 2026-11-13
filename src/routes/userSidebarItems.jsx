@@ -12,6 +12,8 @@ import NotificationsPage from "@/pages/student/NotificationsPage";
 import ProfilePage from "@/pages/student/ProfilePage";
 
 import StudentDashboard from "@/pages/student/StudentDashboard";
+import MyQuestions from "@/pages/student/MyQuestions";
+
 
 
 
@@ -64,6 +66,11 @@ export const userSidebarItems = [
         title:"My Complains",
         url:"/user/complaints",
         component: MyComplains
+      },
+      {
+        title:"My Questions",
+        url:"/user/questions",
+        component: MyQuestions
       },
     
      

@@ -3,22 +3,33 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import { ArrowLeft, HelpCircle } from "lucide-react";
-import { useCreateQuestionMutation } from "@/redux/features/question/question.api";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Field, FieldLabel, FieldError, FieldGroup } from "@/components/ui/field";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import {
+  Field,
+  FieldLabel,
+  FieldError,
+  FieldGroup,
+} from "@/components/ui/field";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { useCreateQuestionMutation } from "@/redux/features/question/question.api";
 // import { toast } from "@/components/ui/toast";
 
-const SUBJECTS = [
-  "CSE",
-  "Mathematics",
-  "Programming",
-  "Database",
-  "Networking",
-  "General Academic",
-];
+const SUBJECTS = ["ACADEMIC", "CAMPUS_LIFE", "CAREER", "TECHNICAL", "OTHER"];
 
 const questionSchema = z.object({
   title: z.string().min(10, {
@@ -50,7 +61,7 @@ export default function QuestionFormPage() {
       await createQuestion(data).unwrap();
       // toast.success("Question submitted! 🎉");
       console.log("Question submitted! 🎉");
-      navigate("/questions");
+      navigate("/user/questions");
     } catch (err) {
       // toast.error(err?.data?.message || "Could not publish question");
       console.log(err);
@@ -60,7 +71,11 @@ export default function QuestionFormPage() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl space-y-6 mt-14">
       <div>
-        <Button onClick={() => navigate("/questions")} variant="ghost" className="rounded-xl gap-2 text-muted-foreground">
+        <Button
+          onClick={() => navigate("/questions")}
+          variant="ghost"
+          className="rounded-xl gap-2 text-muted-foreground"
+        >
           <ArrowLeft className="h-4 w-4" />
           Back to list
         </Button>
@@ -73,7 +88,8 @@ export default function QuestionFormPage() {
             Ask Academic Question
           </CardTitle>
           <CardDescription>
-            Stuck on a course topic? Detail your problem clearly below to receive assistance from other students and teachers.
+            Stuck on a course topic? Detail your problem clearly below to
+            receive assistance from other students and teachers.
           </CardDescription>
         </CardHeader>
         <CardContent className="p-6">
@@ -85,9 +101,17 @@ export default function QuestionFormPage() {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel className="text-foreground font-semibold">Question Title</FieldLabel>
-                    <Input {...field} placeholder="e.g. How to solve recursive relations in Math II?" className="h-11 rounded-xl" />
-                    {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                    <FieldLabel className="text-foreground font-semibold">
+                      Question Title
+                    </FieldLabel>
+                    <Input
+                      {...field}
+                      placeholder="e.g. How to solve recursive relations in Math II?"
+                      className="h-11 rounded-xl"
+                    />
+                    {fieldState.error && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
                   </Field>
                 )}
               />
@@ -98,7 +122,9 @@ export default function QuestionFormPage() {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel className="text-foreground font-semibold">Subject Category</FieldLabel>
+                    <FieldLabel className="text-foreground font-semibold">
+                      Subject Category
+                    </FieldLabel>
                     <Select value={field.value} onValueChange={field.onChange}>
                       <SelectTrigger className="h-11 rounded-xl w-full">
                         <SelectValue placeholder="Select a subject" />
@@ -111,7 +137,9 @@ export default function QuestionFormPage() {
                         ))}
                       </SelectContent>
                     </Select>
-                    {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                    {fieldState.error && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
                   </Field>
                 )}
               />
@@ -122,23 +150,37 @@ export default function QuestionFormPage() {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel className="text-foreground font-semibold">Details / Problem Context</FieldLabel>
+                    <FieldLabel className="text-foreground font-semibold">
+                      Details / Problem Context
+                    </FieldLabel>
                     <textarea
                       {...field}
                       placeholder="Detail your question here. Include code samples, theorems, or error logs if applicable (minimum 15 characters)..."
                       className="w-full min-h-36 rounded-xl border bg-background p-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary border-muted"
                     />
-                    {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                    {fieldState.error && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
                   </Field>
                 )}
               />
             </FieldGroup>
 
             <div className="flex justify-end gap-3 pt-4 border-t">
-              <Button type="button" variant="ghost" onClick={() => navigate("/questions")} className="rounded-xl h-11" disabled={isLoading}>
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => navigate("/questions")}
+                className="rounded-xl h-11"
+                disabled={isLoading}
+              >
                 Cancel
               </Button>
-              <Button type="submit" className="rounded-xl h-11 px-5 gap-2 font-semibold shadow-md bg-indigo-600 hover:bg-indigo-700 text-white" disabled={isLoading}>
+              <Button
+                type="submit"
+                className="rounded-xl h-11 px-5 gap-2 font-semibold shadow-md bg-indigo-600 hover:bg-indigo-700 text-white"
+                disabled={isLoading}
+              >
                 Ask Question
               </Button>
             </div>

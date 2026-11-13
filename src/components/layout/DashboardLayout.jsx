@@ -13,6 +13,7 @@ import {
   Bell,
 
   FileText,
+  MessageSquareText,
 } from "lucide-react";
 
 import { Button } from "../ui/button";
@@ -97,6 +98,11 @@ const studentNavLinks = [
     to: "/user/notifications",
     label: "Notifications",
     icon: Bell,
+  },
+  {
+    to: "/user/questions",
+    label: "My Questions",
+    icon: MessageSquareText,
   },
 
 ];
