@@ -17,14 +17,8 @@ import { LoadingState, EmptyState, ErrorState } from "@/components/common/States
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import {
-  CategoryBadge,
-  InlineError,
-  StatusBadge,
-  getErrorMessage,
-  getId,
-  timeAgo,
-} from "./QuestionParts";
+import { CategoryBadge, InlineError, StatusBadge } from "./QuestionParts";
+import { getErrorMessage, getId, timeAgo } from "./question.utils";
  
 const TABS = [
   { value: "all", label: "All" },
@@ -205,4 +199,3 @@ export default function MyQuestions() {
     </div>
   );
 }
- 

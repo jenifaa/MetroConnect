@@ -15,15 +15,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import {
-  CATEGORIES,
-  Avatar,
-  CategoryBadge,
-  StatusBadge,
-  TagList,
-  getId,
-  timeAgo,
-} from "./QuestionParts";
+import { Avatar, CategoryBadge, StatusBadge, TagList } from "./QuestionParts";
+import { CATEGORIES, getId, timeAgo } from "./question.utils";
  
 const PAGE_SIZE = 10;
  
@@ -269,4 +262,3 @@ export default function QuestionsListPage() {
     </div>
   );
 }
- 

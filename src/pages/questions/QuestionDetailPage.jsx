@@ -21,16 +21,8 @@ import { LoadingState, ErrorState } from "@/components/common/States";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import {
-  Avatar,
-  CategoryBadge,
-  InlineError,
-  StatusBadge,
-  TagList,
-  getErrorMessage,
-  getId,
-  timeAgo,
-} from "./QuestionParts";
+import { Avatar, CategoryBadge, InlineError, StatusBadge, TagList } from "./QuestionParts";
+import { getErrorMessage, getId, timeAgo } from "./question.utils";
  
 const ADMIN_ROLES = ["ADMIN", "SUPER_ADMIN"];
  
@@ -252,7 +244,7 @@ export default function QuestionDetailPage() {
                 maxLength={2000}
                 disabled={isPosting}
                 placeholder="Write an answer that would have helped you when you were stuck..."
-                className="min-h-[84px] w-full resize-y rounded-xl border bg-background px-3 py-2 text-sm leading-relaxed outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                className="min-h-21 w-full resize-y rounded-xl border bg-background px-3 py-2 text-sm leading-relaxed outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
               />
             </div>
             <div className="flex items-center justify-between">
@@ -322,7 +314,7 @@ export default function QuestionDetailPage() {
                         </Button>
                       )}
                     </div>
-                    <p className="whitespace-pre-line break-words text-sm leading-relaxed text-foreground/85">
+                    <p className="whitespace-pre-line wrap-break-word text-sm leading-relaxed text-foreground/85">
                       {comment.content}
                     </p>
                   </div>
@@ -335,4 +327,3 @@ export default function QuestionDetailPage() {
     </div>
   );
 }
- 
