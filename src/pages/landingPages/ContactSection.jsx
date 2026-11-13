@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label";
 
 function ContactSection() {
   return (
-    <section className="relative overflow-hidden bg-background py-20 md:py-28">
+    <section className="relative overflow-hidden bg-background py-20 md:py-10">
       {/* Background Decorations */}
       <div className="pointer-events-none absolute -left-40 top-20 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
       <div className="pointer-events-none absolute -right-40 bottom-10 h-96 w-96 rounded-full bg-primary/10 blur-3xl" />

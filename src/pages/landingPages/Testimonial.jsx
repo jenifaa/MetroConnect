@@ -23,7 +23,7 @@ function Testimonial() {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-background py-20 md:py-28">
+    <section className="relative overflow-hidden bg-background py-20 md:pb-20">
       {/* Background decoration */}
       <div className="absolute -left-32 top-20 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
       <div className="absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />

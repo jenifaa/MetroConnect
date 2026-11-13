@@ -9,11 +9,8 @@ import {
   CircleDot,
 } from "lucide-react";
  
-/* ------------------------------------------------------------------ */
-/*  Sidebar config                                                     */
-/* ------------------------------------------------------------------ */
- 
-// Full class names so Tailwind can see them
+
+
 export const TONES = {
   indigo: { text: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-500/10" },
   amber: { text: "text-amber-600 dark:text-amber-400", bg: "bg-amber-500/10" },

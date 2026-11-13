@@ -9,7 +9,7 @@ import {
   Users,
 } from "lucide-react";
 import HeroSection from "../landingPages/HeroSection";
-import FeedPage from "../community/FeedPage";
+// import FeedPage from "../community/FeedPage";
 import FAQSection from "../landingPages/FAQSection";
 import ContactSection from "../landingPages/ContactSection";
 import Testimonial from "../landingPages/Testimonial";
@@ -33,32 +33,32 @@ const features = [
   },
 ];
 
-// const posts = [
-//   {
-//     category: "CREATIVE WORK",
-//     date: "May 24, 2026",
-//     title: "The little rituals that make collaboration feel effortless",
-//     author: "Aisha Rahman",
-//     read: "6 min read",
-//     hue: "from-orange-100 via-rose-100 to-pink-200",
-//   },
-//   {
-//     category: "BETTER TOGETHER",
-//     date: "May 17, 2026",
-//     title: "How small communities create unusually big momentum",
-//     author: "Nafis Chowdhury",
-//     read: "4 min read",
-//     hue: "from-sky-100 via-cyan-100 to-teal-200",
-//   },
-//   {
-//     category: "IDEAS & PRACTICE",
-//     date: "May 10, 2026",
-//     title: "Making room for deep work in a noisy world",
-//     author: "Sabrina Islam",
-//     read: "5 min read",
-//     hue: "from-violet-100 via-fuchsia-100 to-purple-200",
-//   },
-// ];
+const posts = [
+  {
+    category: "CREATIVE WORK",
+    date: "May 24, 2026",
+    title: "The little rituals that make collaboration feel effortless",
+    author: "Aisha Rahman",
+    read: "6 min read",
+    hue: "from-orange-100 via-rose-100 to-pink-200",
+  },
+  {
+    category: "BETTER TOGETHER",
+    date: "May 17, 2026",
+    title: "How small communities create unusually big momentum",
+    author: "Nafis Chowdhury",
+    read: "4 min read",
+    hue: "from-sky-100 via-cyan-100 to-teal-200",
+  },
+  {
+    category: "IDEAS & PRACTICE",
+    date: "May 10, 2026",
+    title: "Making room for deep work in a noisy world",
+    author: "Sabrina Islam",
+    read: "5 min read",
+    hue: "from-violet-100 via-fuchsia-100 to-purple-200",
+  },
+];
 
 function SectionHeading({ eyebrow, title, copy, centered = true }) {
   return (
@@ -167,7 +167,7 @@ function HomePage() {
           </Link>
         </div>
 
-        {/* <div className="mt-12 grid gap-7 lg:grid-cols-3">
+        <div className="mt-12 grid gap-7 lg:grid-cols-3">
           {posts.map((post, i) => (
             <article key={post.title} className="group">
               <div
@@ -191,12 +191,12 @@ function HomePage() {
               </p>
             </article>
           ))}
-        </div> */}
+        </div>
 
-        <PostSection></PostSection>
+        
       </section>
 
-      <section className="page-wrap pb-22 lg:pb-30">
+      <section className="page-wrap pb-22 lg:pb-10">
         <div className="cta-panel relative overflow-hidden rounded-[2rem] bg-indigo-600 px-7 py-14 text-center text-white sm:px-12">
           <div className="absolute -left-20 -top-20 h-56 w-56 rounded-full bg-white/10" />
           <div className="absolute -bottom-28 -right-8 h-64 w-64 rounded-full border-36 border-white/10" />
@@ -220,7 +220,9 @@ function HomePage() {
           </div>
         </div>
       </section>
-      <FeedPage></FeedPage>
+      {/* <FeedPage></FeedPage> */}
+
+      <PostSection></PostSection>
       <FAQSection></FAQSection>
       <ContactSection></ContactSection>
       <Testimonial></Testimonial>

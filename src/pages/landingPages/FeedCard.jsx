@@ -1,7 +1,8 @@
 import { Link } from "react-router";
 import { cn } from "@/lib/utils";
-import { timeAgo } from "@/pages/questions/question.utils"; // adjust to where you put question.utils.js
-import { BADGE_STYLES, SOURCE_MAP, TONES } from "./feed.utils";
+import { BADGE_STYLES, SOURCE_MAP, TONES } from "@/utils/Feed.utils";
+import { timeAgo } from "@/utils/Question.utils";
+
  
 export default function FeedCard({ item }) {
   const source = SOURCE_MAP[item.type];
@@ -14,7 +15,7 @@ export default function FeedCard({ item }) {
       className="group block rounded-3xl border bg-card p-2 transition-all hover:-translate-y-0.5 hover:shadow-lg"
     >
       {/* Soft media tile, like the reference */}
-      <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-muted/60">
+      <div className="relative aspect-4/3 overflow-hidden rounded-2xl bg-muted/60">
         {item.image ? (
           <img
             src={item.image}
