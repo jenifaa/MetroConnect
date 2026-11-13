@@ -21,8 +21,9 @@ import { LoadingState, ErrorState } from "@/components/common/States";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { getErrorMessage, getId, timeAgo } from "@/utils/Question.utils";
 import { Avatar, CategoryBadge, InlineError, StatusBadge, TagList } from "./QuestionParts";
-import { getErrorMessage, getId, timeAgo } from "./question.utils";
+
  
 const ADMIN_ROLES = ["ADMIN", "SUPER_ADMIN"];
  

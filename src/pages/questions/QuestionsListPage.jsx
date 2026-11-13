@@ -84,7 +84,7 @@ export default function QuestionsListPage() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Link to="/questions/my">
+          <Link to="/user/questions/my">
             <Button variant="outline" className="gap-2 rounded-xl">
               <UserRound className="h-4 w-4" />
               My questions
@@ -179,7 +179,7 @@ export default function QuestionsListPage() {
               Clear filters
             </Button>
           ) : (
-            <Link to="/questions/new">
+            <Link to="/user/questions/new">
               <Button className="rounded-xl">Ask a question</Button>
             </Link>
           )}

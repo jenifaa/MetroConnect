@@ -1,6 +1,7 @@
 import { CheckCircle2, CircleDot } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { FALLBACK_AVATAR, categoryLabel } from "./question.utils";
+import { categoryLabel, FALLBACK_AVATAR } from "@/utils/Question.utils";
+
  
 export function StatusBadge({ isSolved, className }) {
   return (

@@ -13,6 +13,7 @@ import FeedPage from "../community/FeedPage";
 import FAQSection from "../landingPages/FAQSection";
 import ContactSection from "../landingPages/ContactSection";
 import Testimonial from "../landingPages/Testimonial";
+import PostSection from "../landingPages/PostSection";
 
 const features = [
   {
@@ -32,32 +33,32 @@ const features = [
   },
 ];
 
-const posts = [
-  {
-    category: "CREATIVE WORK",
-    date: "May 24, 2026",
-    title: "The little rituals that make collaboration feel effortless",
-    author: "Aisha Rahman",
-    read: "6 min read",
-    hue: "from-orange-100 via-rose-100 to-pink-200",
-  },
-  {
-    category: "BETTER TOGETHER",
-    date: "May 17, 2026",
-    title: "How small communities create unusually big momentum",
-    author: "Nafis Chowdhury",
-    read: "4 min read",
-    hue: "from-sky-100 via-cyan-100 to-teal-200",
-  },
-  {
-    category: "IDEAS & PRACTICE",
-    date: "May 10, 2026",
-    title: "Making room for deep work in a noisy world",
-    author: "Sabrina Islam",
-    read: "5 min read",
-    hue: "from-violet-100 via-fuchsia-100 to-purple-200",
-  },
-];
+// const posts = [
+//   {
+//     category: "CREATIVE WORK",
+//     date: "May 24, 2026",
+//     title: "The little rituals that make collaboration feel effortless",
+//     author: "Aisha Rahman",
+//     read: "6 min read",
+//     hue: "from-orange-100 via-rose-100 to-pink-200",
+//   },
+//   {
+//     category: "BETTER TOGETHER",
+//     date: "May 17, 2026",
+//     title: "How small communities create unusually big momentum",
+//     author: "Nafis Chowdhury",
+//     read: "4 min read",
+//     hue: "from-sky-100 via-cyan-100 to-teal-200",
+//   },
+//   {
+//     category: "IDEAS & PRACTICE",
+//     date: "May 10, 2026",
+//     title: "Making room for deep work in a noisy world",
+//     author: "Sabrina Islam",
+//     read: "5 min read",
+//     hue: "from-violet-100 via-fuchsia-100 to-purple-200",
+//   },
+// ];
 
 function SectionHeading({ eyebrow, title, copy, centered = true }) {
   return (
@@ -165,7 +166,8 @@ function HomePage() {
             Read all stories <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
-        <div className="mt-12 grid gap-7 lg:grid-cols-3">
+
+        {/* <div className="mt-12 grid gap-7 lg:grid-cols-3">
           {posts.map((post, i) => (
             <article key={post.title} className="group">
               <div
@@ -189,7 +191,9 @@ function HomePage() {
               </p>
             </article>
           ))}
-        </div>
+        </div> */}
+
+        <PostSection></PostSection>
       </section>
 
       <section className="page-wrap pb-22 lg:pb-30">

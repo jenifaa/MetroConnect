@@ -17,8 +17,9 @@ import { LoadingState, EmptyState, ErrorState } from "@/components/common/States
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { CategoryBadge, InlineError, StatusBadge } from "./QuestionParts";
-import { getErrorMessage, getId, timeAgo } from "./question.utils";
+import { getErrorMessage, getId, timeAgo } from "@/utils/Question.utils";
+import { CategoryBadge, InlineError, StatusBadge } from "../questions/QuestionParts";
+
  
 const TABS = [
   { value: "all", label: "All" },
@@ -79,7 +80,7 @@ export default function MyQuestions() {
             you have your answer.
           </p>
         </div>
-        <Link to="/questions/new">
+        <Link to="/user/questions/new">
           <Button className="gap-2 rounded-xl">
             <PlusCircle className="h-4 w-4" />
             Ask a question
@@ -124,7 +125,7 @@ export default function MyQuestions() {
           }
         >
           {tab === "all" && (
-            <Link to="/questions/new">
+            <Link to="/user/questions/new">
               <Button className="rounded-xl">Ask a question</Button>
             </Link>
           )}
